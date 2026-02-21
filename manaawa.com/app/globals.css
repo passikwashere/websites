@@ -1,0 +1,99 @@
+@import "tailwindcss";
+
+:root {
+  --beige-light: #F5F0E8;
+  --beige-mid: #E8DFD0;
+  --beige-warm: #D4C4A8;
+  --dark: #1a1a1a;
+}
+
+@theme inline {
+  --color-beige-light: var(--beige-light);
+  --color-beige-mid: var(--beige-mid);
+  --color-beige-warm: var(--beige-warm);
+  --color-dark: var(--dark);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--beige-light);
+  color: var(--dark);
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+}
+
+/* Grain texture overlay */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 128px 128px;
+}
+
+/* Scroll fade-in animation */
+.fade-in {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Hero text animation */
+@keyframes heroReveal {
+  from {
+    opacity: 0;
+    letter-spacing: 0.4em;
+  }
+  to {
+    opacity: 1;
+    letter-spacing: 0.15em;
+  }
+}
+
+.hero-title {
+  animation: heroReveal 1.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.hero-tagline {
+  opacity: 0;
+  animation: fadeUp 1s ease 0.8s forwards;
+}
+
+.hero-scroll-hint {
+  opacity: 0;
+  animation: fadeUp 1s ease 1.4s forwards;
+}
+
+/* Animated background pulse */
+@keyframes bgPulse {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.05); }
+}
+
+.bg-orb {
+  animation: bgPulse 8s ease-in-out infinite;
+}
+
+.bg-orb-delay {
+  animation: bgPulse 10s ease-in-out 2s infinite;
+}
