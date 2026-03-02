@@ -1,6 +1,7 @@
 import Navigation from "@/components/Navigation";
 import Hero from "@/components/Hero";
-import FeaturedSet from "@/components/FeaturedSet";
+import Marquee from "@/components/Marquee";
+import Music from "@/components/Music";
 import Connect from "@/components/Connect";
 import Footer from "@/components/Footer";
 
@@ -10,7 +11,8 @@ export default function Home() {
       <Navigation />
       <main>
         <Hero />
-        <FeaturedSet />
+        <Marquee />
+        <Music />
         <Connect />
       </main>
       <Footer />

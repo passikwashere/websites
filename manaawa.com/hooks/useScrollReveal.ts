@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 
-export function useScrollFade<T extends HTMLElement>(delay = 0) {
+export function useScrollReveal<T extends HTMLElement>(delay = 0) {
   const ref = useRef<T>(null);
 
   useEffect(() => {
@@ -12,13 +12,11 @@ export function useScrollFade<T extends HTMLElement>(delay = 0) {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setTimeout(() => {
-            el.classList.add("visible");
-          }, delay);
+          setTimeout(() => el.classList.add("visible"), delay);
           observer.unobserve(el);
         }
       },
-      { threshold: 0.15 }
+      { threshold: 0.12 }
     );
 
     observer.observe(el);

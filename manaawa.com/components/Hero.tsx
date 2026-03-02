@@ -1,37 +1,85 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+
 export default function Hero() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
+  const [logoError, setLogoError] = useState(false);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+
+    const handle = (e: MouseEvent) => {
+      const rect = section.getBoundingClientRect();
+      setMousePos({
+        x: ((e.clientX - rect.left) / rect.width) * 100,
+        y: ((e.clientY - rect.top) / rect.height) * 100,
+      });
+    };
+
+    section.addEventListener("mousemove", handle);
+    return () => section.removeEventListener("mousemove", handle);
+  }, []);
+
   return (
     <section
+      ref={sectionRef}
       id="hero"
-      className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-[#F5F0E8]"
+      className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-cream"
     >
-      {/* Animated ambient orbs */}
+      {/* Cursor-tracking ambient light */}
+      <div
+        className="absolute inset-0 pointer-events-none opacity-30 transition-opacity duration-[2000ms]"
+        style={{
+          background: `radial-gradient(600px circle at ${mousePos.x}% ${mousePos.y}%, var(--tan), transparent 60%)`,
+        }}
+      />
+
+      {/* Floating orbs */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="bg-orb absolute top-1/4 left-1/4 w-[500px] h-[500px] rounded-full bg-[#D4C4A8]/30 blur-[120px]" />
-        <div className="bg-orb-delay absolute bottom-1/4 right-1/4 w-[400px] h-[400px] rounded-full bg-[#E8DFD0]/50 blur-[100px]" />
-        <div className="bg-orb absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] rounded-full bg-[#D4C4A8]/20 blur-[140px]" />
+        <div className="orb absolute top-[20%] left-[15%] w-[400px] h-[400px] rounded-full bg-tan/25 blur-[120px]" />
+        <div className="orb-alt absolute bottom-[20%] right-[15%] w-[350px] h-[350px] rounded-full bg-sand/40 blur-[100px]" />
+        <div className="orb-slow absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[250px] rounded-full bg-tan/15 blur-[140px]" />
       </div>
 
-      {/* Thin horizontal rule above title */}
-      <div className="relative z-10 flex flex-col items-center gap-8 px-6 text-center">
-        <div className="w-12 h-px bg-[#1a1a1a]/30 mb-4" />
+      {/* Content */}
+      <div className="relative z-10 flex flex-col items-center gap-6 px-6 text-center">
+        {/* Logo image */}
+        {!logoError && (
+          /* eslint-disable-next-line @next/next/no-img-element */
+          <img
+            src="/logo.png"
+            alt="Manaawa"
+            className="hero-logo h-20 md:h-28 w-auto mb-2"
+            onError={() => setLogoError(true)}
+          />
+        )}
 
-        <h1 className="hero-title font-[family-name:var(--font-cormorant)] font-light text-[clamp(4rem,14vw,12rem)] leading-none tracking-[0.15em] text-[#1a1a1a] uppercase">
+        {/* Decorative line */}
+        <div className="hero-line w-16 h-px bg-espresso/20 origin-center" />
+
+        {/* Title */}
+        <h1 className="hero-title font-[family-name:var(--font-cormorant)] font-light text-[clamp(3.5rem,12vw,10rem)] leading-none tracking-[0.15em] text-espresso uppercase">
           Manaawa
         </h1>
 
-        <p className="hero-tagline font-[family-name:var(--font-inter)] text-xs md:text-sm tracking-[0.35em] uppercase text-[#1a1a1a]/50 font-light">
-          DJ &nbsp;·&nbsp; Producer &nbsp;·&nbsp; Electronic Music
+        {/* Tagline */}
+        <p className="hero-tagline text-[11px] md:text-xs tracking-[0.4em] uppercase text-espresso/40 font-medium">
+          DJ &nbsp;&middot;&nbsp; Producer &nbsp;&middot;&nbsp; Electronic Music
         </p>
 
-        <div className="w-12 h-px bg-[#1a1a1a]/30 mt-4" />
+        {/* Decorative line */}
+        <div className="hero-line w-16 h-px bg-espresso/20 origin-center" />
       </div>
 
-      {/* Scroll hint */}
-      <div className="hero-scroll-hint absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3">
-        <span className="font-[family-name:var(--font-inter)] text-[10px] tracking-[0.3em] uppercase text-[#1a1a1a]/30">
+      {/* Scroll indicator */}
+      <div className="hero-scroll absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3">
+        <span className="text-[9px] tracking-[0.4em] uppercase text-espresso/20 font-medium">
           Scroll
         </span>
-        <div className="w-px h-10 bg-gradient-to-b from-[#1a1a1a]/30 to-transparent" />
+        <div className="w-px h-12 bg-gradient-to-b from-espresso/20 to-transparent" />
       </div>
     </section>
   );

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Inter } from "next/font/google";
+import { Cormorant_Garamond, Syne } from "next/font/google";
 import "./globals.css";
 
 const cormorant = Cormorant_Garamond({
@@ -9,15 +9,16 @@ const cormorant = Cormorant_Garamond({
   display: "swap",
 });
 
-const inter = Inter({
+const syne = Syne({
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-syne",
   display: "swap",
 });
 
 export const metadata: Metadata = {
   title: "Manaawa — DJ · Producer · Electronic Music",
-  description: "Manaawa is a DJ and producer crafting electronic music experiences.",
+  description:
+    "Manaawa is a DJ and producer crafting electronic music experiences.",
   openGraph: {
     title: "Manaawa",
     description: "DJ · Producer · Electronic Music",
@@ -31,8 +32,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${cormorant.variable} ${inter.variable}`}>
-      <body>{children}</body>
+    <html lang="en" className={`${cormorant.variable} ${syne.variable}`}>
+      <body className="font-[family-name:var(--font-syne)]">{children}</body>
     </html>
   );
 }
