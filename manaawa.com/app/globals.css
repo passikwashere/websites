@@ -1,11 +1,11 @@
 @import "tailwindcss";
 
 :root {
-  --cream: #F5F0E8;
-  --sand: #E8DFD0;
-  --tan: #D4C4A8;
-  --espresso: #1a1a1a;
-  --gold: #C4A77D;
+  --cream: #F2EDE5;
+  --sand: #E4DCD0;
+  --tan: #C8B89A;
+  --espresso: #0a0a0a;
+  --gold: #B8976A;
 }
 
 @theme inline {
@@ -24,6 +24,8 @@ body {
   background: var(--cream);
   color: var(--espresso);
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* ── Grain texture overlay ── */
@@ -33,7 +35,7 @@ body::before {
   inset: 0;
   pointer-events: none;
   z-index: 9999;
-  opacity: 0.03;
+  opacity: 0.025;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
   background-repeat: repeat;
   background-size: 128px 128px;
@@ -42,9 +44,9 @@ body::before {
 /* ── Scroll reveal ── */
 .reveal {
   opacity: 0;
-  transform: translateY(32px);
-  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateY(40px);
+  transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .reveal.visible {
@@ -56,48 +58,49 @@ body::before {
 @keyframes heroReveal {
   from {
     opacity: 0;
-    letter-spacing: 0.5em;
-    filter: blur(8px);
+    filter: blur(12px);
+    transform: scale(0.92);
   }
   to {
     opacity: 1;
-    letter-spacing: 0.15em;
     filter: blur(0);
+    transform: scale(1);
   }
 }
 
 .hero-title {
-  animation: heroReveal 2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: heroReveal 2.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes fadeUp {
-  from { opacity: 0; transform: translateY(24px); }
+  from { opacity: 0; transform: translateY(28px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes lineExpand {
-  from { transform: scaleX(0); }
-  to   { transform: scaleX(1); }
+  from { transform: scaleX(0); opacity: 0; }
+  to   { transform: scaleX(1); opacity: 1; }
 }
 
 .hero-line {
   transform: scaleX(0);
-  animation: lineExpand 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.6s forwards;
+  opacity: 0;
+  animation: lineExpand 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.8s forwards;
 }
 
 .hero-logo {
   opacity: 0;
-  animation: fadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
+  animation: fadeUp 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
 }
 
 .hero-tagline {
   opacity: 0;
-  animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) 1s forwards;
+  animation: fadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 1.2s forwards;
 }
 
 .hero-scroll {
   opacity: 0;
-  animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) 1.6s forwards;
+  animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) 2s forwards;
 }
 
 /* ── Floating orbs ── */
@@ -107,9 +110,9 @@ body::before {
   66%      { transform: translate(-20px, 15px) scale(0.95); }
 }
 
-.orb        { animation: float 12s ease-in-out infinite; }
-.orb-alt    { animation: float 16s ease-in-out 3s infinite reverse; }
-.orb-slow   { animation: float 20s ease-in-out 6s infinite; }
+.orb        { animation: float 14s ease-in-out infinite; }
+.orb-alt    { animation: float 18s ease-in-out 3s infinite reverse; }
+.orb-slow   { animation: float 22s ease-in-out 6s infinite; }
 
 /* ── Marquee ── */
 @keyframes marquee {
@@ -118,28 +121,38 @@ body::before {
 }
 
 .marquee-track {
-  animation: marquee 25s linear infinite;
+  animation: marquee 30s linear infinite;
 }
 
 /* ── Play button pulse ── */
 @keyframes pulseRing {
-  0%   { transform: scale(1); opacity: 0.5; }
-  100% { transform: scale(1.6); opacity: 0; }
+  0%   { transform: scale(1); opacity: 0.4; }
+  100% { transform: scale(1.8); opacity: 0; }
 }
 
 .play-pulse::before {
   content: '';
   position: absolute;
-  inset: -6px;
+  inset: -8px;
   border-radius: 50%;
   border: 1px solid currentColor;
-  animation: pulseRing 2s ease-out infinite;
+  animation: pulseRing 2.4s ease-out infinite;
+}
+
+/* ── Scroll indicator pulse ── */
+@keyframes scrollPulse {
+  0%, 100% { opacity: 0.15; }
+  50%      { opacity: 0.4; }
+}
+
+.scroll-line {
+  animation: scrollPulse 2.4s ease-in-out infinite;
 }
 
 /* ── Custom scrollbar ── */
-::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: var(--cream); }
-::-webkit-scrollbar-thumb { background: var(--tan); border-radius: 3px; }
+::-webkit-scrollbar-thumb { background: var(--tan); border-radius: 2px; }
 
 /* ── Selection ── */
 ::selection {

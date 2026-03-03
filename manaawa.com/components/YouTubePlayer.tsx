@@ -23,7 +23,7 @@ export default function YouTubePlayer({ videos }: { videos: Video[] }) {
     <div className="space-y-5">
       {/* ── Main player ── */}
       <div
-        className="relative aspect-video rounded-xl overflow-hidden bg-espresso group cursor-pointer shadow-2xl shadow-black/20"
+        className="relative aspect-video overflow-hidden bg-espresso group cursor-pointer shadow-2xl shadow-black/25"
         onClick={() => !playing && setPlaying(true)}
       >
         {playing ? (
@@ -41,15 +41,15 @@ export default function YouTubePlayer({ videos }: { videos: Video[] }) {
             <img
               src={thumbnail}
               alt={current.title}
-              className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+              className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 ease-out group-hover:scale-[1.03]"
             />
 
             {/* Dark overlay */}
-            <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-500" />
+            <div className="absolute inset-0 bg-black/35 group-hover:bg-black/20 transition-colors duration-700" />
 
             {/* Play button */}
             <div className="absolute inset-0 flex items-center justify-center">
-              <div className="play-pulse relative w-[72px] h-[72px] rounded-full bg-cream/90 backdrop-blur-sm flex items-center justify-center text-cream transition-transform duration-500 group-hover:scale-110">
+              <div className="play-pulse relative w-[72px] h-[72px] rounded-full bg-cream/90 backdrop-blur-sm flex items-center justify-center text-cream transition-transform duration-700 ease-out group-hover:scale-110">
                 <svg
                   width="22"
                   height="26"
@@ -64,7 +64,7 @@ export default function YouTubePlayer({ videos }: { videos: Video[] }) {
 
             {/* Title bar */}
             <div className="absolute bottom-0 inset-x-0 p-5 md:p-7 bg-gradient-to-t from-black/60 via-black/20 to-transparent">
-              <p className="text-[11px] md:text-sm text-cream/70 tracking-[0.15em] uppercase font-medium">
+              <p className="font-[family-name:var(--font-heading)] text-[11px] md:text-sm text-cream/60 tracking-[0.2em] uppercase font-light">
                 {current.title}
               </p>
             </div>
@@ -79,7 +79,7 @@ export default function YouTubePlayer({ videos }: { videos: Video[] }) {
             <button
               key={video.id}
               onClick={() => selectVideo(i)}
-              className={`relative aspect-video rounded-lg overflow-hidden group/t transition-all duration-300 ${
+              className={`relative aspect-video overflow-hidden group/t transition-all duration-500 ${
                 i === activeIndex
                   ? "ring-2 ring-tan ring-offset-2 ring-offset-espresso"
                   : "opacity-60 hover:opacity-100"
@@ -92,7 +92,7 @@ export default function YouTubePlayer({ videos }: { videos: Video[] }) {
                 className="absolute inset-0 w-full h-full object-cover"
               />
               <div className="absolute inset-0 bg-black/50 flex items-end p-3">
-                <span className="text-[9px] md:text-[10px] text-cream/80 tracking-[0.15em] uppercase font-medium truncate">
+                <span className="font-[family-name:var(--font-heading)] text-[9px] md:text-[10px] text-cream/70 tracking-[0.2em] uppercase font-light truncate">
                   {video.title}
                 </span>
               </div>

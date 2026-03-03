@@ -1,17 +1,18 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Syne } from "next/font/google";
+import { Space_Grotesk, Outfit } from "next/font/google";
 import "./globals.css";
 
-const cormorant = Cormorant_Garamond({
+const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
-  variable: "--font-cormorant",
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-heading",
   display: "swap",
 });
 
-const syne = Syne({
+const outfit = Outfit({
   subsets: ["latin"],
-  variable: "--font-syne",
+  weight: ["200", "300", "400", "500", "600"],
+  variable: "--font-body",
   display: "swap",
 });
 
@@ -32,8 +33,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${cormorant.variable} ${syne.variable}`}>
-      <body className="font-[family-name:var(--font-syne)]">{children}</body>
+    <html lang="en" className={`${spaceGrotesk.variable} ${outfit.variable}`}>
+      <body className="font-[family-name:var(--font-body)]">{children}</body>
     </html>
   );
 }

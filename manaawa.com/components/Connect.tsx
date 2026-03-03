@@ -57,24 +57,24 @@ export default function Connect() {
   const headingRef = useScrollReveal<HTMLDivElement>();
 
   return (
-    <section id="connect" className="relative bg-cream py-28 md:py-40 px-6">
+    <section id="connect" className="relative bg-cream py-32 md:py-44 px-6">
       <div className="max-w-4xl mx-auto">
         {/* Heading */}
         <div
           ref={headingRef}
-          className="reveal mb-20 flex flex-col items-center text-center gap-4"
+          className="reveal mb-20 flex flex-col items-center text-center gap-5"
         >
-          <span className="text-[10px] tracking-[0.4em] uppercase text-espresso/35 font-medium">
-            Press Kit
+          <span className="font-[family-name:var(--font-heading)] text-[10px] tracking-[0.5em] uppercase text-espresso/25 font-light">
+            Socials
           </span>
-          <h2 className="font-[family-name:var(--font-cormorant)] font-light text-4xl md:text-6xl tracking-[0.1em] text-espresso uppercase">
+          <h2 className="font-[family-name:var(--font-heading)] font-light text-4xl md:text-6xl tracking-[0.08em] text-espresso uppercase">
             Connect
           </h2>
-          <div className="w-8 h-px bg-espresso/15 mt-2" />
+          <div className="w-8 h-px bg-espresso/10 mt-2" />
         </div>
 
         {/* Bento grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {platforms.map((platform, i) => (
             <BentoCard key={platform.name} platform={platform} delay={i * 100} />
           ))}
@@ -101,32 +101,32 @@ function BentoCard({
       href={platform.url}
       target="_blank"
       rel="noopener noreferrer"
-      className={`reveal group relative flex flex-col justify-between overflow-hidden rounded-xl border border-tan/40 transition-all duration-500 hover:border-espresso/20 hover:shadow-lg hover:shadow-tan/20 ${
+      className={`reveal group relative flex flex-col justify-between overflow-hidden border border-tan/30 transition-all duration-700 ease-out hover:border-espresso/15 ${
         isLarge
           ? `${platform.span} bg-espresso p-8 md:p-10 min-h-[240px] md:min-h-[320px]`
-          : `${platform.span} bg-sand/30 p-6 md:p-8 min-h-[140px] md:min-h-[160px] hover:bg-sand/60`
+          : `${platform.span} bg-sand/20 p-6 md:p-8 min-h-[140px] md:min-h-[160px] hover:bg-sand/40`
       }`}
     >
       {/* Icon */}
       <Icon
-        className={`transition-transform duration-500 group-hover:scale-110 ${
+        className={`transition-all duration-700 ease-out group-hover:scale-110 ${
           isLarge
-            ? "w-10 h-10 md:w-12 md:h-12 text-cream/60 group-hover:text-cream/90"
-            : "w-6 h-6 text-espresso/40 group-hover:text-espresso/70"
+            ? "w-10 h-10 md:w-12 md:h-12 text-cream/50 group-hover:text-cream/80"
+            : "w-6 h-6 text-espresso/30 group-hover:text-espresso/60"
         }`}
       />
 
       {/* Text */}
       <div className="mt-auto">
         <p
-          className={`text-[10px] tracking-[0.3em] uppercase font-medium mb-1 ${
-            isLarge ? "text-tan/50" : "text-espresso/30"
+          className={`font-[family-name:var(--font-heading)] text-[9px] tracking-[0.35em] uppercase font-light mb-1.5 ${
+            isLarge ? "text-tan/40" : "text-espresso/25"
           }`}
         >
           {platform.description}
         </p>
         <p
-          className={`font-[family-name:var(--font-cormorant)] font-light tracking-wide ${
+          className={`font-[family-name:var(--font-heading)] font-light tracking-wide ${
             isLarge
               ? "text-2xl md:text-3xl text-cream"
               : "text-xl text-espresso"
@@ -135,8 +135,8 @@ function BentoCard({
           {platform.name}
         </p>
         <p
-          className={`text-xs mt-0.5 ${
-            isLarge ? "text-cream/30" : "text-espresso/30"
+          className={`text-xs mt-0.5 font-light ${
+            isLarge ? "text-cream/25" : "text-espresso/25"
           }`}
         >
           {platform.handle}
@@ -149,8 +149,8 @@ function BentoCard({
         height="16"
         viewBox="0 0 16 16"
         fill="none"
-        className={`absolute top-5 right-5 opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 ${
-          isLarge ? "text-cream/40" : "text-espresso/40"
+        className={`absolute top-5 right-5 opacity-0 group-hover:opacity-100 transition-all duration-500 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 ${
+          isLarge ? "text-cream/30" : "text-espresso/30"
         }`}
       >
         <path

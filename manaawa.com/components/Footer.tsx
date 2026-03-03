@@ -8,13 +8,13 @@ export default function Footer() {
       <div className="py-6 border-b border-cream/[0.04] select-none">
         <div className="marquee-track flex whitespace-nowrap">
           <span
-            className="font-[family-name:var(--font-cormorant)] text-3xl md:text-5xl font-light tracking-[0.12em] text-cream/[0.04] uppercase"
+            className="font-[family-name:var(--font-heading)] text-3xl md:text-5xl font-light tracking-[0.15em] text-cream/[0.04] uppercase"
             aria-hidden="true"
           >
             {marqueeText}
           </span>
           <span
-            className="font-[family-name:var(--font-cormorant)] text-3xl md:text-5xl font-light tracking-[0.12em] text-cream/[0.04] uppercase"
+            className="font-[family-name:var(--font-heading)] text-3xl md:text-5xl font-light tracking-[0.15em] text-cream/[0.04] uppercase"
             aria-hidden="true"
           >
             {marqueeText}
@@ -23,11 +23,19 @@ export default function Footer() {
       </div>
 
       {/* Bottom bar */}
-      <div className="max-w-7xl mx-auto px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <span className="font-[family-name:var(--font-cormorant)] text-sm font-light tracking-[0.3em] uppercase text-cream/20">
+      <div className="max-w-7xl mx-auto px-6 py-10 flex flex-col sm:flex-row items-center justify-between gap-6">
+        <span className="font-[family-name:var(--font-heading)] text-sm font-light tracking-[0.3em] uppercase text-cream/15">
           Manaawa
         </span>
-        <span className="text-[10px] tracking-[0.15em] text-cream/15 font-medium">
+
+        <a
+          href="mailto:booking@manaawa.com"
+          className="font-[family-name:var(--font-heading)] text-[10px] tracking-[0.25em] uppercase text-cream/25 hover:text-cream/60 transition-colors duration-500 font-light"
+        >
+          booking@manaawa.com
+        </a>
+
+        <span className="font-[family-name:var(--font-heading)] text-[10px] tracking-[0.15em] text-cream/10 font-light">
           &copy; Manaawa 2026
         </span>
       </div>
