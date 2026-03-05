@@ -21,8 +21,8 @@ export const metadata: Metadata = {
   description:
     "Manaawa is a Swiss electronic music project creating emotional, melodic and melancholic dance music.",
   icons: {
-    icon: "/images/PNG-05.png",
-    apple: "/images/PNG-05.png",
+    icon: "/images/JPG-02.jpg",
+    apple: "/images/JPG-02.jpg",
   },
   openGraph: {
     title: "Manaawa",
