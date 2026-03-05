@@ -105,7 +105,7 @@ export default function LatestRelease() {
               {/* Artwork */}
               <div className="relative w-full sm:w-[240px] md:w-[280px] aspect-square sm:aspect-auto shrink-0 group">
                 <Image
-                  src="/images/Manaawa%20%26%20Cole%20Morehead%20-%20Is%20It%20Enough.jpg"
+                  src="/images/is-it-enough.jpg"
                   alt="Is It Enough — Manaawa & Cole Morehead"
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
@@ -218,7 +218,7 @@ export default function LatestRelease() {
           {/* Hidden audio element */}
           <audio
             ref={audioRef}
-            src="/music/Manaawa%20%26%20Cole%20Morehead%20-%20Is%20It%20Enough.mp3"
+            src="/music/is-it-enough.mp3"
             preload="metadata"
           />
         </div>

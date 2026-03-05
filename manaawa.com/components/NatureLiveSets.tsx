@@ -8,10 +8,17 @@ interface Video {
   title: string;
 }
 
-// Circular layout: left side ascending toward center, right side descending from center
-// LEFT ← AVAION, E1, E2, E3, E4, E5, E6, E7 | [E14] | E13, E12, E11, E10, E9, E8 → RIGHT
+// Circular layout: scroll left for newer (E13, E12, ...), scroll right for older (E1, E2, ...)
+// LEFT ← AVAION, E8, E9, E10, E11, E12, E13 | [E14] | E1, E2, E3, E4, E5, E6, E7 → RIGHT
 const orderedVideos: Video[] = [
   { id: "uoXFzfJqrA4", title: "AVAION Opening" },
+  { id: "zR6V3BuZiug", title: "Fernweh E8" },
+  { id: "bh6pDL1rpxE", title: "Fernweh E9" },
+  { id: "4F-XuCFw7OY", title: "Fernweh E10" },
+  { id: "fJVx37TdNzc", title: "Fernweh E11" },
+  { id: "IJ3-HVQJ-ys", title: "Fernweh E12" },
+  { id: "PAr75FgWojQ", title: "Fernweh E13" },
+  { id: "MCwwfDH-mWs", title: "Fernweh E14" },
   { id: "anQK_i9TPlk", title: "Fernweh E1" },
   { id: "LVeuBleTOvU", title: "Fernweh E2" },
   { id: "aLqnHWQD6J8", title: "Fernweh E3" },
@@ -19,16 +26,9 @@ const orderedVideos: Video[] = [
   { id: "-CYEXLt-XYM", title: "Fernweh E5" },
   { id: "37j4sTGcPFM", title: "Fernweh E6" },
   { id: "_-dQdxYLCCE", title: "Fernweh E7" },
-  { id: "MCwwfDH-mWs", title: "Fernweh E14" },
-  { id: "PAr75FgWojQ", title: "Fernweh E13" },
-  { id: "IJ3-HVQJ-ys", title: "Fernweh E12" },
-  { id: "fJVx37TdNzc", title: "Fernweh E11" },
-  { id: "4F-XuCFw7OY", title: "Fernweh E10" },
-  { id: "bh6pDL1rpxE", title: "Fernweh E9" },
-  { id: "zR6V3BuZiug", title: "Fernweh E8" },
 ];
 
-const CENTER_START = 8; // E14
+const CENTER_START = 7; // E14
 const CARD_WIDTH = 560;
 const CARD_GAP = 20;
 
