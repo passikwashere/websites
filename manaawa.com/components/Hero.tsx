@@ -17,7 +17,6 @@ export default function Hero() {
 
       {/* Content */}
       <div className="relative z-10 flex flex-col items-center gap-6 px-6 text-center">
-        {/* Logo image — bigger */}
         <Image
           src="/images/PNG-01.png"
           alt="Manaawa"
@@ -27,15 +26,23 @@ export default function Hero() {
           className="hero-logo h-24 md:h-36 lg:h-44 w-auto mb-2"
         />
 
-        {/* Decorative line */}
         <div className="hero-line w-16 h-px bg-espresso/20 origin-center" />
 
-        {/* Tagline */}
-        <p className="hero-tagline text-[11px] md:text-xs tracking-[0.4em] uppercase text-espresso/40 font-medium">
-          Emotional &nbsp;&middot;&nbsp; Melodic &nbsp;&middot;&nbsp; Melancholic
-        </p>
+        {/* Animated tagline words */}
+        <div className="flex items-center gap-2 md:gap-3">
+          <span className="hero-word-1 text-[11px] md:text-xs tracking-[0.4em] uppercase text-espresso/40 font-medium">
+            Emotional
+          </span>
+          <span className="hero-word-dot-1 text-espresso/20">&middot;</span>
+          <span className="hero-word-2 text-[11px] md:text-xs tracking-[0.4em] uppercase text-espresso/40 font-medium">
+            Nature
+          </span>
+          <span className="hero-word-dot-2 text-espresso/20">&middot;</span>
+          <span className="hero-word-3 text-[11px] md:text-xs tracking-[0.4em] uppercase text-espresso/40 font-medium">
+            Melancholic
+          </span>
+        </div>
 
-        {/* Decorative line */}
         <div className="hero-line w-16 h-px bg-espresso/20 origin-center" />
       </div>
 

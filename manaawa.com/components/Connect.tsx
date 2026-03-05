@@ -14,8 +14,6 @@ interface Platform {
   handle: string;
   url: string;
   icon: IconType;
-  description: string;
-  span: string;
 }
 
 const platforms: Platform[] = [
@@ -24,32 +22,24 @@ const platforms: Platform[] = [
     handle: "@manaawa.project",
     url: "https://www.youtube.com/@manaawa.project",
     icon: FaYoutube,
-    description: "Sets & mixes",
-    span: "col-span-2 row-span-2",
   },
   {
     name: "Instagram",
     handle: "@manaawa.project",
     url: "https://www.instagram.com/manaawa.project/",
     icon: FaInstagram,
-    description: "Behind the scenes",
-    span: "col-span-1",
   },
   {
     name: "Spotify",
     handle: "Manaawa",
     url: "https://open.spotify.com/intl-de/artist/0DuSv6WDqfozjWVK47Cejj?si=uzDwIMHwT-eiAJItRFYZMQ",
     icon: FaSpotify,
-    description: "Artist profile",
-    span: "col-span-1",
   },
   {
     name: "TikTok",
     handle: "@manaawa",
     url: "https://tr.ee/nLv28DKuXg",
     icon: FaTiktok,
-    description: "Short clips",
-    span: "col-span-2",
   },
 ];
 
@@ -58,7 +48,7 @@ export default function Connect() {
 
   return (
     <section id="connect" className="relative bg-cream py-28 md:py-40 px-6">
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-5xl mx-auto">
         {/* Heading */}
         <div
           ref={headingRef}
@@ -73,10 +63,10 @@ export default function Connect() {
           <div className="w-8 h-px bg-espresso/15 mt-2" />
         </div>
 
-        {/* Bento grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        {/* Social links — horizontal row */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
           {platforms.map((platform, i) => (
-            <BentoCard key={platform.name} platform={platform} delay={i * 100} />
+            <SocialCard key={platform.name} platform={platform} delay={i * 100} />
           ))}
         </div>
       </div>
@@ -84,7 +74,7 @@ export default function Connect() {
   );
 }
 
-function BentoCard({
+function SocialCard({
   platform,
   delay,
 }: {
@@ -93,7 +83,6 @@ function BentoCard({
 }) {
   const ref = useScrollReveal<HTMLAnchorElement>(delay);
   const Icon = platform.icon;
-  const isLarge = platform.span.includes("row-span-2");
 
   return (
     <a
@@ -101,66 +90,30 @@ function BentoCard({
       href={platform.url}
       target="_blank"
       rel="noopener noreferrer"
-      className={`reveal group relative flex flex-col justify-between overflow-hidden rounded-xl border border-tan/40 transition-all duration-500 hover:border-espresso/20 hover:shadow-lg hover:shadow-tan/20 ${
-        isLarge
-          ? `${platform.span} bg-espresso p-8 md:p-10 min-h-[240px] md:min-h-[320px]`
-          : `${platform.span} bg-sand/30 p-6 md:p-8 min-h-[140px] md:min-h-[160px] hover:bg-sand/60`
-      }`}
+      className="reveal group relative flex flex-col items-center justify-center gap-4 py-10 md:py-14 rounded-2xl bg-espresso border border-espresso/80 overflow-hidden transition-all duration-500 hover:border-tan/30 hover:shadow-xl hover:shadow-tan/10"
     >
-      {/* Icon */}
-      <Icon
-        className={`transition-transform duration-500 group-hover:scale-110 ${
-          isLarge
-            ? "w-10 h-10 md:w-12 md:h-12 text-cream/60 group-hover:text-cream/90"
-            : "w-6 h-6 text-espresso/40 group-hover:text-espresso/70"
-        }`}
-      />
+      {/* Animated gradient bg on hover */}
+      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 bg-gradient-to-br from-tan/[0.06] via-transparent to-gold/[0.04]" />
 
-      {/* Text */}
-      <div className="mt-auto">
-        <p
-          className={`text-[10px] tracking-[0.3em] uppercase font-medium mb-1 ${
-            isLarge ? "text-tan/50" : "text-espresso/30"
-          }`}
-        >
-          {platform.description}
-        </p>
-        <p
-          className={`font-[family-name:var(--font-cormorant)] font-light tracking-wide ${
-            isLarge
-              ? "text-2xl md:text-3xl text-cream"
-              : "text-xl text-espresso"
-          }`}
-        >
-          {platform.name}
-        </p>
-        <p
-          className={`text-xs mt-0.5 ${
-            isLarge ? "text-cream/30" : "text-espresso/30"
-          }`}
-        >
-          {platform.handle}
-        </p>
+      {/* Glow ring behind icon */}
+      <div className="relative">
+        <div className="absolute inset-0 scale-[2.5] rounded-full bg-tan/0 group-hover:bg-tan/[0.06] blur-xl transition-all duration-700" />
+        <Icon className="relative w-7 h-7 md:w-8 md:h-8 text-cream/40 group-hover:text-cream/90 transition-all duration-500 group-hover:scale-110" />
       </div>
 
-      {/* Arrow */}
-      <svg
-        width="16"
-        height="16"
-        viewBox="0 0 16 16"
-        fill="none"
-        className={`absolute top-5 right-5 opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 ${
-          isLarge ? "text-cream/40" : "text-espresso/40"
-        }`}
-      >
-        <path
-          d="M3 13L13 3M13 3H6M13 3V10"
-          stroke="currentColor"
-          strokeWidth="1.2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
+      {/* Name */}
+      <span className="relative text-[11px] md:text-xs tracking-[0.3em] uppercase text-cream/50 group-hover:text-cream/90 font-medium transition-colors duration-500">
+        {platform.name}
+      </span>
+
+      {/* Handle — slides up on hover */}
+      <span className="relative text-[9px] tracking-[0.15em] text-cream/0 group-hover:text-cream/30 transition-all duration-500 translate-y-2 group-hover:translate-y-0">
+        {platform.handle}
+      </span>
+
+      {/* Corner accent line */}
+      <div className="absolute top-0 right-0 w-0 h-px bg-tan/40 group-hover:w-12 transition-all duration-700" />
+      <div className="absolute top-0 right-0 h-0 w-px bg-tan/40 group-hover:h-12 transition-all duration-700" />
     </a>
   );
 }

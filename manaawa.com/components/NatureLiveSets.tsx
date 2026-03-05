@@ -8,6 +8,7 @@ interface Video {
   title: string;
 }
 
+// Ordered newest first — E16 is the center start
 const videos: Video[] = [
   { id: "MCwwfDH-mWs", title: "Fernweh E14" },
   { id: "PAr75FgWojQ", title: "Fernweh E13" },
@@ -26,6 +27,20 @@ const videos: Video[] = [
   { id: "uoXFzfJqrA4", title: "AVAION Opening" },
 ];
 
+// Reorder: left side gets older episodes ascending, right side gets newer descending
+// Center = newest (index 0). Left of center = E1, E2, E3... Right of center = E13, E12, E11...
+function buildCircularOrder(vids: Video[]): Video[] {
+  // vids[0] is newest. We want: ...E1, E2, E3 | E14(newest) | E13, E12, E11...
+  const newest = vids[0];
+  const rest = vids.slice(1); // E13..E1,AVAION — newest to oldest
+  const reversed = [...rest].reverse(); // AVAION, E1, E2... oldest to newest
+
+  return [...reversed, newest];
+}
+
+const orderedVideos = buildCircularOrder(videos);
+const CENTER_START = orderedVideos.length - 1; // newest is last in the reordered array
+
 const CARD_WIDTH = 560;
 const CARD_GAP = 20;
 
@@ -34,28 +49,35 @@ export default function NatureLiveSets() {
   const galleryRef = useScrollReveal<HTMLDivElement>(200);
   const scrollRef = useRef<HTMLDivElement>(null);
   const [playingId, setPlayingId] = useState<string | null>(null);
-  const [centerIndex, setCenterIndex] = useState(0);
-  const [canScrollLeft, setCanScrollLeft] = useState(false);
-  const [canScrollRight, setCanScrollRight] = useState(true);
+  const [centerIndex, setCenterIndex] = useState(CENTER_START);
+  const hasInitialized = useRef(false);
 
-  const updateState = useCallback(() => {
+  // Scroll to center on mount
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el || hasInitialized.current) return;
+    hasInitialized.current = true;
+
+    const itemFullWidth = CARD_WIDTH + CARD_GAP;
+    const targetScroll = CENTER_START * itemFullWidth;
+    el.scrollLeft = targetScroll;
+  }, []);
+
+  const updateCenter = useCallback(() => {
     const el = scrollRef.current;
     if (!el) return;
     const scrollCenter = el.scrollLeft + el.clientWidth / 2;
-    const itemFullWidth = CARD_WIDTH + CARD_GAP;
-    const idx = Math.round((scrollCenter - el.clientWidth / 2) / itemFullWidth);
-    setCenterIndex(Math.max(0, Math.min(idx, videos.length - 1)));
-    setCanScrollLeft(el.scrollLeft > 10);
-    setCanScrollRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 10);
+    const padLeft = (el.clientWidth - CARD_WIDTH) / 2;
+    const idx = Math.round((scrollCenter - padLeft - CARD_WIDTH / 2) / (CARD_WIDTH + CARD_GAP));
+    setCenterIndex(Math.max(0, Math.min(idx, orderedVideos.length - 1)));
   }, []);
 
   useEffect(() => {
     const el = scrollRef.current;
     if (!el) return;
-    el.addEventListener("scroll", updateState, { passive: true });
-    updateState();
-    return () => el.removeEventListener("scroll", updateState);
-  }, [updateState]);
+    el.addEventListener("scroll", updateCenter, { passive: true });
+    return () => el.removeEventListener("scroll", updateCenter);
+  }, [updateCenter]);
 
   const scrollTo = (direction: "left" | "right") => {
     const el = scrollRef.current;
@@ -86,34 +108,30 @@ export default function NatureLiveSets() {
         {/* Gallery */}
         <div ref={galleryRef} className="reveal relative">
           {/* Scroll buttons */}
-          {canScrollLeft && (
-            <button
-              onClick={() => scrollTo("left")}
-              className="absolute left-2 md:left-6 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-cream/10 backdrop-blur-md border border-cream/10 flex items-center justify-center text-cream/60 hover:text-cream hover:bg-cream/20 transition-all duration-300"
-              aria-label="Scroll left"
-            >
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <path d="M12 4L6 10L12 16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </button>
-          )}
-          {canScrollRight && (
-            <button
-              onClick={() => scrollTo("right")}
-              className="absolute right-2 md:right-6 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-cream/10 backdrop-blur-md border border-cream/10 flex items-center justify-center text-cream/60 hover:text-cream hover:bg-cream/20 transition-all duration-300"
-              aria-label="Scroll right"
-            >
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <path d="M8 4L14 10L8 16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </button>
-          )}
+          <button
+            onClick={() => scrollTo("left")}
+            className="absolute left-2 md:left-6 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-cream/10 backdrop-blur-md border border-cream/10 flex items-center justify-center text-cream/60 hover:text-cream hover:bg-cream/20 transition-all duration-300"
+            aria-label="Scroll left"
+          >
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M12 4L6 10L12 16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </button>
+          <button
+            onClick={() => scrollTo("right")}
+            className="absolute right-2 md:right-6 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-cream/10 backdrop-blur-md border border-cream/10 flex items-center justify-center text-cream/60 hover:text-cream hover:bg-cream/20 transition-all duration-300"
+            aria-label="Scroll right"
+          >
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M8 4L14 10L8 16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </button>
 
           {/* Edge fades */}
           <div className="absolute left-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-r from-espresso to-transparent z-10 pointer-events-none" />
           <div className="absolute right-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-l from-espresso to-transparent z-10 pointer-events-none" />
 
-          {/* Scrollable row — centered snap */}
+          {/* Scrollable row */}
           <div
             ref={scrollRef}
             className="gallery-scroll flex gap-5 overflow-x-auto py-6"
@@ -122,7 +140,7 @@ export default function NatureLiveSets() {
               paddingRight: `calc(50vw - ${CARD_WIDTH / 2}px)`,
             }}
           >
-            {videos.map((video, i) => (
+            {orderedVideos.map((video, i) => (
               <VideoCard
                 key={video.id}
                 video={video}
@@ -153,7 +171,7 @@ function VideoCard({
 
   return (
     <div
-      className="gallery-item transition-transform duration-500 ease-out"
+      className="gallery-item transition-all duration-500 ease-out"
       style={{
         width: `${CARD_WIDTH}px`,
         transform: isCentered ? "scale(1.08)" : "scale(0.92)",

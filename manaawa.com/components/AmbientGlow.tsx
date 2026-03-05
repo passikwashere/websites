@@ -1,28 +1,45 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 
 export default function AmbientGlow() {
-  const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
+  const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const handle = (e: MouseEvent) => {
-      setMousePos({
-        x: (e.clientX / window.innerWidth) * 100,
-        y: ((e.clientY + window.scrollY) / document.documentElement.scrollHeight) * 100,
-      });
+    const el = ref.current;
+    if (!el) return;
+
+    let x = 0;
+    let y = 0;
+    let targetX = 0;
+    let targetY = 0;
+    let raf: number;
+
+    const onMove = (e: MouseEvent) => {
+      targetX = e.clientX;
+      targetY = e.clientY;
     };
 
-    window.addEventListener("mousemove", handle);
-    return () => window.removeEventListener("mousemove", handle);
+    const animate = () => {
+      x += (targetX - x) * 0.08;
+      y += (targetY - y) * 0.08;
+      el.style.background = `radial-gradient(600px circle at ${x}px ${y}px, var(--tan), transparent 55%)`;
+      raf = requestAnimationFrame(animate);
+    };
+
+    window.addEventListener("mousemove", onMove);
+    raf = requestAnimationFrame(animate);
+
+    return () => {
+      window.removeEventListener("mousemove", onMove);
+      cancelAnimationFrame(raf);
+    };
   }, []);
 
   return (
     <div
-      className="fixed inset-0 pointer-events-none z-[1] opacity-40 transition-opacity duration-[2000ms]"
-      style={{
-        background: `radial-gradient(600px circle at ${mousePos.x}% ${(mousePos.y)}%, var(--tan), transparent 55%)`,
-      }}
+      ref={ref}
+      className="fixed inset-0 pointer-events-none z-[1] opacity-40"
     />
   );
 }
