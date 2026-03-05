@@ -30,7 +30,7 @@ export default function Navigation() {
             alt="Manaawa"
             width={200}
             height={50}
-            className="h-5 md:h-6 w-auto"
+            className="h-8 md:h-10 w-auto"
           />
         </a>
 
