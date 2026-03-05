@@ -13,17 +13,24 @@ export default function AmbientGlow() {
     let y = 0;
     let targetX = 0;
     let targetY = 0;
+    let inHero = true;
     let raf: number;
 
     const onMove = (e: MouseEvent) => {
       targetX = e.clientX;
       targetY = e.clientY;
+      const heroEl = document.getElementById("hero");
+      if (heroEl) {
+        const rect = heroEl.getBoundingClientRect();
+        inHero = e.clientY >= rect.top && e.clientY <= rect.bottom;
+      }
     };
 
     const animate = () => {
       x += (targetX - x) * 0.08;
       y += (targetY - y) * 0.08;
-      el.style.background = `radial-gradient(600px circle at ${x}px ${y}px, var(--tan), transparent 55%)`;
+      const size = inHero ? 600 : 300;
+      el.style.background = `radial-gradient(${size}px circle at ${x}px ${y}px, var(--tan), transparent 55%)`;
       raf = requestAnimationFrame(animate);
     };
 
@@ -39,7 +46,7 @@ export default function AmbientGlow() {
   return (
     <div
       ref={ref}
-      className="fixed inset-0 pointer-events-none z-[2] opacity-40"
+      className="fixed inset-0 pointer-events-none z-[2] opacity-40 mix-blend-soft-light"
     />
   );
 }

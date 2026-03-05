@@ -54,8 +54,8 @@ export default function About() {
           </div>
         </div>
 
-        {/* Divider */}
-        <div className="my-20 md:my-28 flex justify-center">
+        {/* Divider — closer spacing */}
+        <div className="my-12 md:my-16 flex justify-center">
           <div className="w-12 h-px bg-espresso/10" />
         </div>
 
@@ -69,7 +69,16 @@ export default function About() {
               Fernweh Live-Sets
             </span>
             <p className="text-base md:text-lg leading-relaxed text-espresso/70">
-              The Fernweh melancholic dance music live sets are a collaboration with Home-Vision Media, a Swiss film production company.
+              The Fernweh melancholic dance music live sets are a collaboration with{" "}
+              <a
+                href="https://www.homevisions.ch/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block text-espresso/90 underline decoration-tan/40 underline-offset-4 transition-all duration-300 hover:decoration-espresso/60 hover:scale-[1.02] origin-left"
+              >
+                Home-Vision Media
+              </a>
+              , a Swiss film production company.
             </p>
             <p className="text-base md:text-lg leading-relaxed text-espresso/70">
               Created with the ambition to connect music and some of the most beautiful natural landscapes, the series brings together sound, emotion and visual atmosphere in a unique way.

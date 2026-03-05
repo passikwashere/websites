@@ -8,7 +8,8 @@ interface Video {
   title: string;
 }
 
-// Display order: scroll left = older (E1,E2,...), center = newest (E14), scroll right = E13,E12,...
+// Circular layout: left side ascending toward center, right side descending from center
+// LEFT ← AVAION, E1, E2, E3, E4, E5, E6, E7 | [E14] | E13, E12, E11, E10, E9, E8 → RIGHT
 const orderedVideos: Video[] = [
   { id: "uoXFzfJqrA4", title: "AVAION Opening" },
   { id: "anQK_i9TPlk", title: "Fernweh E1" },
@@ -18,18 +19,16 @@ const orderedVideos: Video[] = [
   { id: "-CYEXLt-XYM", title: "Fernweh E5" },
   { id: "37j4sTGcPFM", title: "Fernweh E6" },
   { id: "_-dQdxYLCCE", title: "Fernweh E7" },
-  { id: "zR6V3BuZiug", title: "Fernweh E8" },
-  { id: "bh6pDL1rpxE", title: "Fernweh E9" },
-  { id: "4F-XuCFw7OY", title: "Fernweh E10" },
-  { id: "fJVx37TdNzc", title: "Fernweh E11" },
-  { id: "IJ3-HVQJ-ys", title: "Fernweh E12" },
-  { id: "PAr75FgWojQ", title: "Fernweh E13" },
   { id: "MCwwfDH-mWs", title: "Fernweh E14" },
+  { id: "PAr75FgWojQ", title: "Fernweh E13" },
+  { id: "IJ3-HVQJ-ys", title: "Fernweh E12" },
+  { id: "fJVx37TdNzc", title: "Fernweh E11" },
+  { id: "4F-XuCFw7OY", title: "Fernweh E10" },
+  { id: "bh6pDL1rpxE", title: "Fernweh E9" },
+  { id: "zR6V3BuZiug", title: "Fernweh E8" },
 ];
 
-// Newest episode is last in the array
-const CENTER_START = orderedVideos.length - 1;
-
+const CENTER_START = 8; // E14
 const CARD_WIDTH = 560;
 const CARD_GAP = 20;
 
@@ -41,14 +40,11 @@ export default function NatureLiveSets() {
   const [centerIndex, setCenterIndex] = useState(CENTER_START);
   const hasInitialized = useRef(false);
 
-  // Scroll to newest on mount
   useEffect(() => {
     const el = scrollRef.current;
     if (!el || hasInitialized.current) return;
     hasInitialized.current = true;
-
-    const itemFullWidth = CARD_WIDTH + CARD_GAP;
-    el.scrollLeft = CENTER_START * itemFullWidth;
+    el.scrollLeft = CENTER_START * (CARD_WIDTH + CARD_GAP);
     setCenterIndex(CENTER_START);
   }, []);
 
@@ -80,7 +76,6 @@ export default function NatureLiveSets() {
   return (
     <section id="live-sets" className="relative bg-espresso py-28 md:py-40 overflow-hidden">
       <div className="mx-auto">
-        {/* Heading */}
         <div
           ref={headingRef}
           className="reveal mb-16 flex flex-col items-center text-center gap-4 px-6"
@@ -94,9 +89,7 @@ export default function NatureLiveSets() {
           <div className="w-8 h-px bg-tan/25 mt-2" />
         </div>
 
-        {/* Gallery */}
         <div ref={galleryRef} className="reveal relative">
-          {/* Scroll buttons */}
           <button
             onClick={() => scrollTo("left")}
             className="absolute left-2 md:left-6 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-cream/10 backdrop-blur-md border border-cream/10 flex items-center justify-center text-cream/60 hover:text-cream hover:bg-cream/20 transition-all duration-300"
@@ -116,11 +109,9 @@ export default function NatureLiveSets() {
             </svg>
           </button>
 
-          {/* Edge fades */}
           <div className="absolute left-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-r from-espresso to-transparent z-10 pointer-events-none" />
           <div className="absolute right-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-l from-espresso to-transparent z-10 pointer-events-none" />
 
-          {/* Scrollable row */}
           <div
             ref={scrollRef}
             className="gallery-scroll flex gap-5 overflow-x-auto py-6"
@@ -189,7 +180,6 @@ function VideoCard({
             />
             <div className="absolute inset-0 bg-black/30 group-hover:bg-black/15 transition-colors duration-500" />
 
-            {/* Play button */}
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="play-pulse relative w-[60px] h-[60px] md:w-[72px] md:h-[72px] rounded-full bg-cream/90 backdrop-blur-sm flex items-center justify-center text-cream transition-transform duration-500 group-hover:scale-110">
                 <svg width="20" height="24" viewBox="0 0 22 26" fill="none" className="ml-1">
@@ -198,7 +188,6 @@ function VideoCard({
               </div>
             </div>
 
-            {/* Title bar */}
             <div className="absolute bottom-0 inset-x-0 p-4 md:p-6 bg-gradient-to-t from-black/60 via-black/20 to-transparent">
               <p className="text-[11px] md:text-sm text-cream/70 tracking-[0.15em] uppercase font-medium">
                 {video.title}
