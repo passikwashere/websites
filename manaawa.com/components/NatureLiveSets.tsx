@@ -76,6 +76,15 @@ export default function NatureLiveSets() {
     });
   };
 
+  const scrollToIndex = useCallback((index: number) => {
+    const el = scrollRef.current;
+    if (!el) return;
+    el.scrollTo({
+      left: index * (CARD_WIDTH + CARD_GAP),
+      behavior: "smooth",
+    });
+  }, []);
+
   return (
     <section id="live-sets" className="relative bg-espresso py-28 md:py-40 overflow-hidden">
       <div className="mx-auto">
@@ -129,7 +138,13 @@ export default function NatureLiveSets() {
                 video={video}
                 isCentered={i === centerIndex}
                 isPlaying={playingId === video.id}
-                onPlay={() => setPlayingId(video.id)}
+                onClick={() => {
+                  if (i === centerIndex) {
+                    setPlayingId(video.id);
+                  } else {
+                    scrollToIndex(i);
+                  }
+                }}
               />
             ))}
           </div>
@@ -143,12 +158,12 @@ function VideoCard({
   video,
   isCentered,
   isPlaying,
-  onPlay,
+  onClick,
 }: {
   video: Video;
   isCentered: boolean;
   isPlaying: boolean;
-  onPlay: () => void;
+  onClick: () => void;
 }) {
   const thumbnail = `https://img.youtube.com/vi/${video.id}/maxresdefault.jpg`;
 
@@ -163,7 +178,7 @@ function VideoCard({
     >
       <div
         className="relative aspect-video rounded-xl overflow-hidden bg-espresso group cursor-pointer shadow-2xl shadow-black/30 border border-cream/5"
-        onClick={() => !isPlaying && onPlay()}
+        onClick={() => !isPlaying && onClick()}
       >
         {isPlaying ? (
           <iframe
