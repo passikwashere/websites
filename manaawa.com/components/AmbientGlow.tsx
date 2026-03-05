@@ -30,7 +30,8 @@ export default function AmbientGlow() {
       x += (targetX - x) * 0.08;
       y += (targetY - y) * 0.08;
       const size = inHero ? 600 : 300;
-      el.style.background = `radial-gradient(${size}px circle at ${x}px ${y}px, var(--tan), transparent 55%)`;
+      const alpha = inHero ? 0.35 : 0.15;
+      el.style.background = `radial-gradient(${size}px circle at ${x}px ${y}px, rgba(196, 167, 125, ${alpha}), transparent 55%)`;
       raf = requestAnimationFrame(animate);
     };
 
@@ -46,7 +47,7 @@ export default function AmbientGlow() {
   return (
     <div
       ref={ref}
-      className="fixed inset-0 pointer-events-none z-[2] opacity-40 mix-blend-soft-light"
+      className="fixed inset-0 pointer-events-none z-[2]"
     />
   );
 }

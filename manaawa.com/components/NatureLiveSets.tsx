@@ -44,7 +44,8 @@ export default function NatureLiveSets() {
     const el = scrollRef.current;
     if (!el || hasInitialized.current) return;
     hasInitialized.current = true;
-    el.scrollLeft = CENTER_START * (CARD_WIDTH + CARD_GAP);
+    const padLeft = (el.clientWidth - CARD_WIDTH) / 2;
+    el.scrollLeft = CENTER_START * (CARD_WIDTH + CARD_GAP) - padLeft;
     setCenterIndex(CENTER_START);
   }, []);
 
