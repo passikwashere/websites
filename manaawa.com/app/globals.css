@@ -26,15 +26,15 @@ body {
   overflow-x: hidden;
 }
 
-/* ── Grain texture overlay ── */
+/* ── Grain texture overlay (analog feel) ── */
 body::before {
   content: '';
   position: fixed;
   inset: 0;
   pointer-events: none;
   z-index: 9999;
-  opacity: 0.03;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  opacity: 0.045;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
   background-repeat: repeat;
   background-size: 128px 128px;
 }
@@ -53,21 +53,22 @@ body::before {
 }
 
 /* ── Hero animations ── */
-@keyframes heroReveal {
+@keyframes heroLogoReveal {
   from {
     opacity: 0;
-    letter-spacing: 0.5em;
-    filter: blur(8px);
+    filter: blur(12px);
+    transform: scale(0.92);
   }
   to {
     opacity: 1;
-    letter-spacing: 0.15em;
     filter: blur(0);
+    transform: scale(1);
   }
 }
 
-.hero-title {
-  animation: heroReveal 2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+.hero-logo {
+  opacity: 0;
+  animation: heroLogoReveal 2s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
 }
 
 @keyframes fadeUp {
@@ -83,11 +84,6 @@ body::before {
 .hero-line {
   transform: scaleX(0);
   animation: lineExpand 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.6s forwards;
-}
-
-.hero-logo {
-  opacity: 0;
-  animation: fadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
 }
 
 .hero-tagline {
@@ -134,6 +130,22 @@ body::before {
   border-radius: 50%;
   border: 1px solid currentColor;
   animation: pulseRing 2s ease-out infinite;
+}
+
+/* ── Video gallery carousel ── */
+.gallery-scroll {
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.gallery-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.gallery-item {
+  scroll-snap-align: center;
+  flex-shrink: 0;
 }
 
 /* ── Custom scrollbar ── */

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Syne } from "next/font/google";
+import { Cormorant_Garamond, Libre_Baskerville } from "next/font/google";
 import "./globals.css";
 
 const cormorant = Cormorant_Garamond({
@@ -9,19 +9,24 @@ const cormorant = Cormorant_Garamond({
   display: "swap",
 });
 
-const syne = Syne({
+const libre = Libre_Baskerville({
   subsets: ["latin"],
-  variable: "--font-syne",
+  weight: ["400", "700"],
+  variable: "--font-libre",
   display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "Manaawa — DJ · Producer · Electronic Music",
+  title: "Manaawa — Electronic Music Project",
   description:
-    "Manaawa is a DJ and producer crafting electronic music experiences.",
+    "Manaawa is a Swiss electronic music project creating emotional, melodic and melancholic dance music.",
+  icons: {
+    icon: "/images/PNG-05.png",
+    apple: "/images/PNG-05.png",
+  },
   openGraph: {
     title: "Manaawa",
-    description: "DJ · Producer · Electronic Music",
+    description: "Emotional, melodic and melancholic dance music.",
     siteName: "Manaawa",
   },
 };
@@ -32,8 +37,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${cormorant.variable} ${syne.variable}`}>
-      <body className="font-[family-name:var(--font-syne)]">{children}</body>
+    <html lang="en" className={`${cormorant.variable} ${libre.variable}`}>
+      <body className="font-[family-name:var(--font-libre)]">{children}</body>
     </html>
   );
 }

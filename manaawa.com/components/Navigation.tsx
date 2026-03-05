@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
 export default function Navigation() {
   const [scrolled, setScrolled] = useState(false);
-  const [logoError, setLogoError] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
@@ -25,27 +25,27 @@ export default function Navigation() {
           href="#hero"
           className="flex items-center gap-3 hover:opacity-60 transition-opacity duration-300"
         >
-          {/* Logo — drop your logo.png into /public */}
-          {!logoError && (
-            /* eslint-disable-next-line @next/next/no-img-element */
-            <img
-              src="/logo.png"
-              alt=""
-              className="h-7 w-auto"
-              onError={() => setLogoError(true)}
-            />
-          )}
-          <span className="font-[family-name:var(--font-cormorant)] text-lg font-light tracking-[0.25em] text-espresso uppercase">
-            Manaawa
-          </span>
+          <Image
+            src="/images/PNG-01.png"
+            alt="Manaawa"
+            width={200}
+            height={50}
+            className="h-5 md:h-6 w-auto"
+          />
         </a>
 
         <div className="flex items-center gap-8">
           <a
-            href="#music"
+            href="#live-sets"
             className="text-[11px] font-medium tracking-[0.25em] uppercase text-espresso/50 hover:text-espresso transition-colors duration-300"
           >
-            Music
+            Live Sets
+          </a>
+          <a
+            href="#about"
+            className="text-[11px] font-medium tracking-[0.25em] uppercase text-espresso/50 hover:text-espresso transition-colors duration-300"
+          >
+            About
           </a>
           <a
             href="#connect"
