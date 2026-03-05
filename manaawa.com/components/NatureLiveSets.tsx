@@ -26,17 +26,25 @@ const videos: Video[] = [
   { id: "uoXFzfJqrA4", title: "AVAION Opening" },
 ];
 
+const CARD_WIDTH = 560;
+const CARD_GAP = 20;
+
 export default function NatureLiveSets() {
   const headingRef = useScrollReveal<HTMLDivElement>();
   const galleryRef = useScrollReveal<HTMLDivElement>(200);
   const scrollRef = useRef<HTMLDivElement>(null);
   const [playingId, setPlayingId] = useState<string | null>(null);
+  const [centerIndex, setCenterIndex] = useState(0);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
 
-  const updateScrollButtons = useCallback(() => {
+  const updateState = useCallback(() => {
     const el = scrollRef.current;
     if (!el) return;
+    const scrollCenter = el.scrollLeft + el.clientWidth / 2;
+    const itemFullWidth = CARD_WIDTH + CARD_GAP;
+    const idx = Math.round((scrollCenter - el.clientWidth / 2) / itemFullWidth);
+    setCenterIndex(Math.max(0, Math.min(idx, videos.length - 1)));
     setCanScrollLeft(el.scrollLeft > 10);
     setCanScrollRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 10);
   }, []);
@@ -44,24 +52,23 @@ export default function NatureLiveSets() {
   useEffect(() => {
     const el = scrollRef.current;
     if (!el) return;
-    el.addEventListener("scroll", updateScrollButtons, { passive: true });
-    updateScrollButtons();
-    return () => el.removeEventListener("scroll", updateScrollButtons);
-  }, [updateScrollButtons]);
+    el.addEventListener("scroll", updateState, { passive: true });
+    updateState();
+    return () => el.removeEventListener("scroll", updateState);
+  }, [updateState]);
 
-  const scroll = (direction: "left" | "right") => {
+  const scrollTo = (direction: "left" | "right") => {
     const el = scrollRef.current;
     if (!el) return;
-    const amount = el.clientWidth * 0.7;
     el.scrollBy({
-      left: direction === "left" ? -amount : amount,
+      left: direction === "left" ? -(CARD_WIDTH + CARD_GAP) : CARD_WIDTH + CARD_GAP,
       behavior: "smooth",
     });
   };
 
   return (
     <section id="live-sets" className="relative bg-espresso py-28 md:py-40 overflow-hidden">
-      <div className="max-w-[1600px] mx-auto">
+      <div className="mx-auto">
         {/* Heading */}
         <div
           ref={headingRef}
@@ -81,7 +88,7 @@ export default function NatureLiveSets() {
           {/* Scroll buttons */}
           {canScrollLeft && (
             <button
-              onClick={() => scroll("left")}
+              onClick={() => scrollTo("left")}
               className="absolute left-2 md:left-6 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-cream/10 backdrop-blur-md border border-cream/10 flex items-center justify-center text-cream/60 hover:text-cream hover:bg-cream/20 transition-all duration-300"
               aria-label="Scroll left"
             >
@@ -92,7 +99,7 @@ export default function NatureLiveSets() {
           )}
           {canScrollRight && (
             <button
-              onClick={() => scroll("right")}
+              onClick={() => scrollTo("right")}
               className="absolute right-2 md:right-6 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-cream/10 backdrop-blur-md border border-cream/10 flex items-center justify-center text-cream/60 hover:text-cream hover:bg-cream/20 transition-all duration-300"
               aria-label="Scroll right"
             >
@@ -103,18 +110,23 @@ export default function NatureLiveSets() {
           )}
 
           {/* Edge fades */}
-          <div className="absolute left-0 top-0 bottom-0 w-12 md:w-24 bg-gradient-to-r from-espresso to-transparent z-10 pointer-events-none" />
-          <div className="absolute right-0 top-0 bottom-0 w-12 md:w-24 bg-gradient-to-l from-espresso to-transparent z-10 pointer-events-none" />
+          <div className="absolute left-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-r from-espresso to-transparent z-10 pointer-events-none" />
+          <div className="absolute right-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-l from-espresso to-transparent z-10 pointer-events-none" />
 
-          {/* Scrollable row */}
+          {/* Scrollable row — centered snap */}
           <div
             ref={scrollRef}
-            className="gallery-scroll flex gap-5 overflow-x-auto px-12 md:px-28 py-4"
+            className="gallery-scroll flex gap-5 overflow-x-auto py-6"
+            style={{
+              paddingLeft: `calc(50vw - ${CARD_WIDTH / 2}px)`,
+              paddingRight: `calc(50vw - ${CARD_WIDTH / 2}px)`,
+            }}
           >
-            {videos.map((video) => (
+            {videos.map((video, i) => (
               <VideoCard
                 key={video.id}
                 video={video}
+                isCentered={i === centerIndex}
                 isPlaying={playingId === video.id}
                 onPlay={() => setPlayingId(video.id)}
               />
@@ -128,17 +140,26 @@ export default function NatureLiveSets() {
 
 function VideoCard({
   video,
+  isCentered,
   isPlaying,
   onPlay,
 }: {
   video: Video;
+  isCentered: boolean;
   isPlaying: boolean;
   onPlay: () => void;
 }) {
   const thumbnail = `https://img.youtube.com/vi/${video.id}/maxresdefault.jpg`;
 
   return (
-    <div className="gallery-item w-[320px] md:w-[480px] lg:w-[560px]">
+    <div
+      className="gallery-item transition-transform duration-500 ease-out"
+      style={{
+        width: `${CARD_WIDTH}px`,
+        transform: isCentered ? "scale(1.08)" : "scale(0.92)",
+        opacity: isCentered ? 1 : 0.5,
+      }}
+    >
       <div
         className="relative aspect-video rounded-xl overflow-hidden bg-espresso group cursor-pointer shadow-2xl shadow-black/30 border border-cream/5"
         onClick={() => !isPlaying && onPlay()}

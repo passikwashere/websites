@@ -1,50 +1,13 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
 export default function Hero() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
-
-  useEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
-
-    const handle = (e: MouseEvent) => {
-      const rect = section.getBoundingClientRect();
-      setMousePos({
-        x: ((e.clientX - rect.left) / rect.width) * 100,
-        y: ((e.clientY - rect.top) / rect.height) * 100,
-      });
-    };
-
-    section.addEventListener("mousemove", handle);
-    return () => section.removeEventListener("mousemove", handle);
-  }, []);
-
   return (
     <section
-      ref={sectionRef}
       id="hero"
       className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-cream"
     >
-      {/* Cursor-tracking ambient light — more present */}
-      <div
-        className="absolute inset-0 pointer-events-none opacity-50 transition-opacity duration-[1500ms]"
-        style={{
-          background: `radial-gradient(700px circle at ${mousePos.x}% ${mousePos.y}%, var(--tan), transparent 55%)`,
-        }}
-      />
-
-      {/* Secondary warm glow following cursor */}
-      <div
-        className="absolute inset-0 pointer-events-none opacity-25 transition-opacity duration-[2500ms]"
-        style={{
-          background: `radial-gradient(400px circle at ${mousePos.x}% ${mousePos.y}%, var(--gold), transparent 50%)`,
-        }}
-      />
-
       {/* Floating orbs */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="orb absolute top-[20%] left-[15%] w-[400px] h-[400px] rounded-full bg-tan/30 blur-[120px]" />
@@ -54,14 +17,14 @@ export default function Hero() {
 
       {/* Content */}
       <div className="relative z-10 flex flex-col items-center gap-6 px-6 text-center">
-        {/* Logo image */}
+        {/* Logo image — bigger */}
         <Image
           src="/images/PNG-01.png"
           alt="Manaawa"
-          width={600}
-          height={150}
+          width={800}
+          height={200}
           priority
-          className="hero-logo h-16 md:h-24 lg:h-28 w-auto mb-2"
+          className="hero-logo h-24 md:h-36 lg:h-44 w-auto mb-2"
         />
 
         {/* Decorative line */}

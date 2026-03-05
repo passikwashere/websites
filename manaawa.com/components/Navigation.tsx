@@ -34,7 +34,7 @@ export default function Navigation() {
           />
         </a>
 
-        <div className="flex items-center gap-8">
+        <div className="flex items-center gap-6 md:gap-8">
           <a
             href="#live-sets"
             className="text-[11px] font-medium tracking-[0.25em] uppercase text-espresso/50 hover:text-espresso transition-colors duration-300"
@@ -52,6 +52,12 @@ export default function Navigation() {
             className="text-[11px] font-medium tracking-[0.25em] uppercase text-espresso/50 hover:text-espresso transition-colors duration-300"
           >
             Connect
+          </a>
+          <a
+            href="mailto:booking@manaawa.com"
+            className="text-[11px] font-medium tracking-[0.25em] uppercase bg-espresso text-cream px-4 py-2 hover:bg-espresso/80 transition-colors duration-300"
+          >
+            Booking
           </a>
         </div>
       </div>
