@@ -44,17 +44,19 @@ export default function NatureLiveSets() {
     const el = scrollRef.current;
     if (!el || hasInitialized.current) return;
     hasInitialized.current = true;
-    const padLeft = (el.clientWidth - CARD_WIDTH) / 2;
-    el.scrollLeft = CENTER_START * (CARD_WIDTH + CARD_GAP) - padLeft;
+    // Each card's left edge is at: index * (CARD_WIDTH + CARD_GAP)
+    // To center card N, we need scrollLeft such that the card's center aligns with viewport center.
+    // The scroll container has paddingLeft = (viewport - CARD_WIDTH) / 2, so the first card
+    // is already offset. scrollLeft to center card N:
+    const itemOffset = CENTER_START * (CARD_WIDTH + CARD_GAP);
+    el.scrollLeft = itemOffset;
     setCenterIndex(CENTER_START);
   }, []);
 
   const updateCenter = useCallback(() => {
     const el = scrollRef.current;
     if (!el) return;
-    const padLeft = (el.clientWidth - CARD_WIDTH) / 2;
-    const scrollCenter = el.scrollLeft + padLeft + CARD_WIDTH / 2;
-    const idx = Math.round(scrollCenter / (CARD_WIDTH + CARD_GAP));
+    const idx = Math.round(el.scrollLeft / (CARD_WIDTH + CARD_GAP));
     setCenterIndex(Math.max(0, Math.min(idx, orderedVideos.length - 1)));
   }, []);
 
