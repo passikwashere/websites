@@ -39,7 +39,7 @@ export default function AmbientGlow() {
   return (
     <div
       ref={ref}
-      className="fixed inset-0 pointer-events-none z-0 opacity-40"
+      className="fixed inset-0 pointer-events-none z-[2] opacity-40"
     />
   );
 }

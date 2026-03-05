@@ -8,38 +8,27 @@ interface Video {
   title: string;
 }
 
-// Ordered newest first — E16 is the center start
-const videos: Video[] = [
-  { id: "MCwwfDH-mWs", title: "Fernweh E14" },
-  { id: "PAr75FgWojQ", title: "Fernweh E13" },
-  { id: "IJ3-HVQJ-ys", title: "Fernweh E12" },
-  { id: "fJVx37TdNzc", title: "Fernweh E11" },
-  { id: "4F-XuCFw7OY", title: "Fernweh E10" },
-  { id: "bh6pDL1rpxE", title: "Fernweh E9" },
-  { id: "zR6V3BuZiug", title: "Fernweh E8" },
-  { id: "_-dQdxYLCCE", title: "Fernweh E7" },
-  { id: "37j4sTGcPFM", title: "Fernweh E6" },
-  { id: "-CYEXLt-XYM", title: "Fernweh E5" },
-  { id: "tRoTI6LBq7w", title: "Fernweh E4" },
-  { id: "aLqnHWQD6J8", title: "Fernweh E3" },
-  { id: "LVeuBleTOvU", title: "Fernweh E2" },
-  { id: "anQK_i9TPlk", title: "Fernweh E1" },
+// Display order: scroll left = older (E1,E2,...), center = newest (E14), scroll right = E13,E12,...
+const orderedVideos: Video[] = [
   { id: "uoXFzfJqrA4", title: "AVAION Opening" },
+  { id: "anQK_i9TPlk", title: "Fernweh E1" },
+  { id: "LVeuBleTOvU", title: "Fernweh E2" },
+  { id: "aLqnHWQD6J8", title: "Fernweh E3" },
+  { id: "tRoTI6LBq7w", title: "Fernweh E4" },
+  { id: "-CYEXLt-XYM", title: "Fernweh E5" },
+  { id: "37j4sTGcPFM", title: "Fernweh E6" },
+  { id: "_-dQdxYLCCE", title: "Fernweh E7" },
+  { id: "zR6V3BuZiug", title: "Fernweh E8" },
+  { id: "bh6pDL1rpxE", title: "Fernweh E9" },
+  { id: "4F-XuCFw7OY", title: "Fernweh E10" },
+  { id: "fJVx37TdNzc", title: "Fernweh E11" },
+  { id: "IJ3-HVQJ-ys", title: "Fernweh E12" },
+  { id: "PAr75FgWojQ", title: "Fernweh E13" },
+  { id: "MCwwfDH-mWs", title: "Fernweh E14" },
 ];
 
-// Reorder: left side gets older episodes ascending, right side gets newer descending
-// Center = newest (index 0). Left of center = E1, E2, E3... Right of center = E13, E12, E11...
-function buildCircularOrder(vids: Video[]): Video[] {
-  // vids[0] is newest. We want: ...E1, E2, E3 | E14(newest) | E13, E12, E11...
-  const newest = vids[0];
-  const rest = vids.slice(1); // E13..E1,AVAION — newest to oldest
-  const reversed = [...rest].reverse(); // AVAION, E1, E2... oldest to newest
-
-  return [...reversed, newest];
-}
-
-const orderedVideos = buildCircularOrder(videos);
-const CENTER_START = orderedVideos.length - 1; // newest is last in the reordered array
+// Newest episode is last in the array
+const CENTER_START = orderedVideos.length - 1;
 
 const CARD_WIDTH = 560;
 const CARD_GAP = 20;
@@ -52,23 +41,23 @@ export default function NatureLiveSets() {
   const [centerIndex, setCenterIndex] = useState(CENTER_START);
   const hasInitialized = useRef(false);
 
-  // Scroll to center on mount
+  // Scroll to newest on mount
   useEffect(() => {
     const el = scrollRef.current;
     if (!el || hasInitialized.current) return;
     hasInitialized.current = true;
 
     const itemFullWidth = CARD_WIDTH + CARD_GAP;
-    const targetScroll = CENTER_START * itemFullWidth;
-    el.scrollLeft = targetScroll;
+    el.scrollLeft = CENTER_START * itemFullWidth;
+    setCenterIndex(CENTER_START);
   }, []);
 
   const updateCenter = useCallback(() => {
     const el = scrollRef.current;
     if (!el) return;
-    const scrollCenter = el.scrollLeft + el.clientWidth / 2;
     const padLeft = (el.clientWidth - CARD_WIDTH) / 2;
-    const idx = Math.round((scrollCenter - padLeft - CARD_WIDTH / 2) / (CARD_WIDTH + CARD_GAP));
+    const scrollCenter = el.scrollLeft + padLeft + CARD_WIDTH / 2;
+    const idx = Math.round(scrollCenter / (CARD_WIDTH + CARD_GAP));
     setCenterIndex(Math.max(0, Math.min(idx, orderedVideos.length - 1)));
   }, []);
 
