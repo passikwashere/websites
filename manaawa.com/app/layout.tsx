@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, Libre_Baskerville } from "next/font/google";
-import CustomCursor from "@/components/CustomCursor";
 import "./globals.css";
 
 const cormorant = Cormorant_Garamond({
@@ -39,10 +38,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${cormorant.variable} ${libre.variable}`}>
-      <body className="font-[family-name:var(--font-libre)]">
-        <CustomCursor />
-        {children}
-      </body>
+      <body className="font-[family-name:var(--font-libre)]">{children}</body>
     </html>
   );
 }
