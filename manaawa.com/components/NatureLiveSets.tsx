@@ -8,9 +8,7 @@ interface Video {
   title: string;
 }
 
-// Circular layout: scroll left for newer (E13, E12, ...), scroll right for older (E1, E2, ...)
-// LEFT ← AVAION, E8, E9, E10, E11, E12, E13 | [E14] | E1, E2, E3, E4, E5, E6, E7 → RIGHT
-const orderedVideos: Video[] = [
+const videos: Video[] = [
   { id: "uoXFzfJqrA4", title: "AVAION Opening" },
   { id: "zR6V3BuZiug", title: "Fernweh E8" },
   { id: "bh6pDL1rpxE", title: "Fernweh E9" },
@@ -28,9 +26,16 @@ const orderedVideos: Video[] = [
   { id: "_-dQdxYLCCE", title: "Fernweh E7" },
 ];
 
-const CENTER_START = 7; // E14
+const COUNT = videos.length;
+const CENTER_START = 7; // E14 in the real (middle) set
 const CARD_WIDTH = 560;
 const CARD_GAP = 20;
+const STEP = CARD_WIDTH + CARD_GAP;
+
+// We render 3 copies: [clone-prev] [real] [clone-next]
+// Total items = COUNT * 3. The "real" set starts at index COUNT.
+const tripled = [...videos, ...videos, ...videos];
+const REAL_OFFSET = COUNT; // where the real set starts in tripled array
 
 export default function NatureLiveSets() {
   const headingRef = useScrollReveal<HTMLDivElement>();
@@ -38,34 +43,53 @@ export default function NatureLiveSets() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [playingId, setPlayingId] = useState<string | null>(null);
   const [centerIndex, setCenterIndex] = useState(CENTER_START);
-  const hasInitialized = useRef(false);
+  const isJumping = useRef(false);
 
+  // Scroll to a given real-set index (0..COUNT-1), offset into the middle set
+  const getScrollLeft = (realIdx: number) => (REAL_OFFSET + realIdx) * STEP;
+
+  // Initialize scroll position to E14 in the middle set
   useEffect(() => {
     const el = scrollRef.current;
-    if (!el || hasInitialized.current) return;
-    hasInitialized.current = true;
-    // Each card's left edge is at: index * (CARD_WIDTH + CARD_GAP)
-    // To center card N, we need scrollLeft such that the card's center aligns with viewport center.
-    // The scroll container has paddingLeft = (viewport - CARD_WIDTH) / 2, so the first card
-    // is already offset. scrollLeft to center card N:
-    const itemOffset = CENTER_START * (CARD_WIDTH + CARD_GAP);
-    el.scrollLeft = itemOffset;
+    if (!el) return;
+    el.scrollLeft = getScrollLeft(CENTER_START);
     setCenterIndex(CENTER_START);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const updateCenter = useCallback(() => {
+  // On scroll: update center index + loop when entering clone zones
+  const onScroll = useCallback(() => {
     const el = scrollRef.current;
-    if (!el) return;
-    const idx = Math.round(el.scrollLeft / (CARD_WIDTH + CARD_GAP));
-    setCenterIndex(Math.max(0, Math.min(idx, orderedVideos.length - 1)));
+    if (!el || isJumping.current) return;
+
+    // Current tripled index
+    const tripledIdx = Math.round(el.scrollLeft / STEP);
+    // Convert to real index
+    const realIdx = ((tripledIdx % COUNT) + COUNT) % COUNT;
+    setCenterIndex(realIdx);
+
+    // If we've scrolled into the clone zones, teleport back to real set
+    const realStart = REAL_OFFSET * STEP;
+    const realEnd = (REAL_OFFSET + COUNT - 1) * STEP;
+
+    if (el.scrollLeft < realStart - STEP * 2 || el.scrollLeft > realEnd + STEP * 2) {
+      isJumping.current = true;
+      el.style.scrollSnapType = "none";
+      el.scrollLeft = getScrollLeft(realIdx);
+      // Re-enable snap after the jump
+      requestAnimationFrame(() => {
+        el.style.scrollSnapType = "";
+        isJumping.current = false;
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     const el = scrollRef.current;
     if (!el) return;
-    el.addEventListener("scroll", updateCenter, { passive: true });
+    el.addEventListener("scroll", onScroll, { passive: true });
 
-    // Convert vertical wheel scroll to horizontal scroll for desktop
     const onWheel = (e: WheelEvent) => {
       if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
         e.preventDefault();
@@ -75,27 +99,28 @@ export default function NatureLiveSets() {
     el.addEventListener("wheel", onWheel, { passive: false });
 
     return () => {
-      el.removeEventListener("scroll", updateCenter);
+      el.removeEventListener("scroll", onScroll);
       el.removeEventListener("wheel", onWheel);
     };
-  }, [updateCenter]);
+  }, [onScroll]);
 
-  const scrollTo = (direction: "left" | "right") => {
+  const scrollDir = (direction: "left" | "right") => {
     const el = scrollRef.current;
     if (!el) return;
     el.scrollBy({
-      left: direction === "left" ? -(CARD_WIDTH + CARD_GAP) : CARD_WIDTH + CARD_GAP,
+      left: direction === "left" ? -STEP : STEP,
       behavior: "smooth",
     });
   };
 
-  const scrollToIndex = useCallback((index: number) => {
+  const scrollToReal = useCallback((realIdx: number) => {
     const el = scrollRef.current;
     if (!el) return;
     el.scrollTo({
-      left: index * (CARD_WIDTH + CARD_GAP),
+      left: getScrollLeft(realIdx),
       behavior: "smooth",
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -116,7 +141,7 @@ export default function NatureLiveSets() {
 
         <div ref={galleryRef} className="reveal relative">
           <button
-            onClick={() => scrollTo("left")}
+            onClick={() => scrollDir("left")}
             className="absolute left-2 md:left-6 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-cream/10 backdrop-blur-md border border-cream/10 flex items-center justify-center text-cream/60 hover:text-cream hover:bg-cream/20 transition-all duration-300"
             aria-label="Scroll left"
           >
@@ -125,7 +150,7 @@ export default function NatureLiveSets() {
             </svg>
           </button>
           <button
-            onClick={() => scrollTo("right")}
+            onClick={() => scrollDir("right")}
             className="absolute right-2 md:right-6 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-cream/10 backdrop-blur-md border border-cream/10 flex items-center justify-center text-cream/60 hover:text-cream hover:bg-cream/20 transition-all duration-300"
             aria-label="Scroll right"
           >
@@ -145,21 +170,24 @@ export default function NatureLiveSets() {
               paddingRight: `calc(50vw - ${CARD_WIDTH / 2}px)`,
             }}
           >
-            {orderedVideos.map((video, i) => (
-              <VideoCard
-                key={video.id}
-                video={video}
-                isCentered={i === centerIndex}
-                isPlaying={playingId === video.id}
-                onClick={() => {
-                  if (i === centerIndex) {
-                    setPlayingId(video.id);
-                  } else {
-                    scrollToIndex(i);
-                  }
-                }}
-              />
-            ))}
+            {tripled.map((video, i) => {
+              const realIdx = i % COUNT;
+              return (
+                <VideoCard
+                  key={`${video.id}-${i}`}
+                  video={video}
+                  isCentered={realIdx === centerIndex}
+                  isPlaying={playingId === video.id}
+                  onClick={() => {
+                    if (realIdx === centerIndex) {
+                      setPlayingId(video.id);
+                    } else {
+                      scrollToReal(realIdx);
+                    }
+                  }}
+                />
+              );
+            })}
           </div>
         </div>
       </div>
