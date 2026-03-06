@@ -78,7 +78,7 @@ export default function LatestRelease() {
   const progress = duration > 0 ? (currentTime / duration) * 100 : 0;
 
   return (
-    <section className="relative bg-espresso py-28 md:py-40 px-6">
+    <section id="music" className="relative bg-espresso py-28 md:py-40 px-6">
       <div className="max-w-4xl mx-auto">
         {/* Heading */}
         <div

@@ -64,7 +64,20 @@ export default function NatureLiveSets() {
     const el = scrollRef.current;
     if (!el) return;
     el.addEventListener("scroll", updateCenter, { passive: true });
-    return () => el.removeEventListener("scroll", updateCenter);
+
+    // Convert vertical wheel scroll to horizontal scroll for desktop
+    const onWheel = (e: WheelEvent) => {
+      if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+        e.preventDefault();
+        el.scrollBy({ left: e.deltaY, behavior: "auto" });
+      }
+    };
+    el.addEventListener("wheel", onWheel, { passive: false });
+
+    return () => {
+      el.removeEventListener("scroll", updateCenter);
+      el.removeEventListener("wheel", onWheel);
+    };
   }, [updateCenter]);
 
   const scrollTo = (direction: "left" | "right") => {
