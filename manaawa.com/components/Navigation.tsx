@@ -13,11 +13,32 @@ const links = [
 export default function Navigation() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("");
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    const ids = links.map((l) => l.href.slice(1));
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+        if (visible.length > 0) {
+          setActiveSection("#" + visible[0].target.id);
+        }
+      },
+      { rootMargin: "-40% 0px -40% 0px", threshold: 0 }
+    );
+    ids.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+    return () => observer.disconnect();
   }, []);
 
   // Close menu on resize to desktop
@@ -64,7 +85,11 @@ export default function Navigation() {
               <a
                 key={link.href}
                 href={link.href}
-                className="text-[11px] font-medium tracking-[0.25em] uppercase text-espresso/50 hover:text-espresso transition-colors duration-300"
+                className={`text-[11px] font-medium tracking-[0.25em] uppercase transition-colors duration-300 ${
+                  activeSection === link.href
+                    ? "text-espresso"
+                    : "text-espresso/50 hover:text-espresso"
+                }`}
               >
                 {link.label}
               </a>
@@ -115,7 +140,11 @@ export default function Navigation() {
             key={link.href}
             href={link.href}
             onClick={() => setMenuOpen(false)}
-            className="text-sm font-medium tracking-[0.3em] uppercase text-espresso/60 hover:text-espresso transition-colors duration-300"
+            className={`text-sm font-medium tracking-[0.3em] uppercase transition-colors duration-300 ${
+              activeSection === link.href
+                ? "text-espresso"
+                : "text-espresso/60 hover:text-espresso"
+            }`}
           >
             {link.label}
           </a>
