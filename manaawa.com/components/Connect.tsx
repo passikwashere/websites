@@ -5,7 +5,9 @@ import {
   FaInstagram,
   FaSpotify,
   FaTiktok,
+  FaEnvelope,
 } from "react-icons/fa6";
+import { SiXiaohongshu } from "react-icons/si";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import type { IconType } from "react-icons";
 
@@ -14,6 +16,7 @@ interface Platform {
   handle: string;
   url: string;
   icon: IconType;
+  external?: boolean;
 }
 
 const platforms: Platform[] = [
@@ -41,6 +44,19 @@ const platforms: Platform[] = [
     url: "https://tr.ee/nLv28DKuXg",
     icon: FaTiktok,
   },
+  {
+    name: "RedNote",
+    handle: "@manaawa",
+    url: "https://tr.ee/R4xGPlbyyt",
+    icon: SiXiaohongshu,
+  },
+  {
+    name: "E-Mail",
+    handle: "booking@manaawa.com",
+    url: "mailto:booking@manaawa.com",
+    icon: FaEnvelope,
+    external: false,
+  },
 ];
 
 export default function Connect() {
@@ -54,9 +70,6 @@ export default function Connect() {
           ref={headingRef}
           className="reveal mb-20 flex flex-col items-center text-center gap-4"
         >
-          <span className="text-[10px] tracking-[0.4em] uppercase text-espresso/35 font-medium">
-            Press Kit
-          </span>
           <h2 className="font-[family-name:var(--font-cormorant)] font-light text-4xl md:text-6xl tracking-[0.1em] text-espresso uppercase">
             Connect
           </h2>
@@ -64,9 +77,9 @@ export default function Connect() {
         </div>
 
         {/* Social links — horizontal row */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
           {platforms.map((platform, i) => (
-            <SocialCard key={platform.name} platform={platform} delay={i * 100} />
+            <SocialCard key={platform.name} platform={platform} delay={i * 80} />
           ))}
         </div>
       </div>
@@ -88,8 +101,7 @@ function SocialCard({
     <a
       ref={ref}
       href={platform.url}
-      target="_blank"
-      rel="noopener noreferrer"
+      {...(platform.external !== false ? { target: "_blank", rel: "noopener noreferrer" } : {})}
       className="reveal group relative flex flex-col items-center justify-center gap-4 py-10 md:py-14 rounded-2xl bg-espresso border border-espresso/80 overflow-hidden transition-all duration-500 hover:border-tan/30 hover:shadow-xl hover:shadow-tan/10"
     >
       {/* Animated gradient bg on hover */}
