@@ -146,10 +146,6 @@ export default function NatureLiveSets() {
             Nature Live-Sets
           </h2>
           <div className="w-8 h-px bg-tan/25 mt-2" />
-          <p className="max-w-xl text-sm md:text-base text-cream/60 leading-relaxed mt-2">
-            The Fernweh melancholic dance music live sets are a collaboration with Home-Vision Media, a Swiss film production company.
-            Created with the ambition to connect music and some of the most beautiful natural landscapes, the series brings together sound, emotion, and visual atmosphere in a unique way. A new set is released every 12th day of the month, inviting listeners on a monthly audiovisual journey.
-          </p>
         </div>
 
         <div ref={galleryRef} className="reveal relative">

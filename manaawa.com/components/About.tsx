@@ -79,9 +79,7 @@ export default function About() {
                 Home-Vision Media
               </a>
               , a Swiss film production company.
-            </p>
-            <p className="text-base md:text-lg leading-relaxed text-espresso/70">
-              Created with the ambition to connect music and some of the most beautiful natural landscapes, the series brings together sound, emotion and visual atmosphere in a unique way.
+              Created with the ambition to connect music and some of the most beautiful natural landscapes, the series brings together sound, emotion, and visual atmosphere in a unique way. A new set is released every 12th day of the month, inviting listeners on a monthly audiovisual journey.
             </p>
           </div>
 
