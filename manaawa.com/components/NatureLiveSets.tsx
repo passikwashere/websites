@@ -17,6 +17,7 @@ const videos: Video[] = [
   { id: "IJ3-HVQJ-ys", title: "Fernweh E12" },
   { id: "PAr75FgWojQ", title: "Fernweh E13" },
   { id: "MCwwfDH-mWs", title: "Fernweh E14" },
+  { id: "AjNiZbKd9ZY", title: "Fernweh E15" },
   { id: "anQK_i9TPlk", title: "Fernweh E1" },
   { id: "LVeuBleTOvU", title: "Fernweh E2" },
   { id: "aLqnHWQD6J8", title: "Fernweh E3" },
@@ -27,7 +28,7 @@ const videos: Video[] = [
 ];
 
 const COUNT = videos.length;
-const CENTER_START = 7; // E14
+const CENTER_START = 8; // E15
 const CARD_GAP = 20;
 const CARD_WIDTH_DESKTOP = 560;
 const REAL_OFFSET = COUNT;
