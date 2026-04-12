@@ -40,8 +40,8 @@ const platforms: Platform[] = [
   },
   {
     name: "TikTok",
-    handle: "@manaawa",
-    url: "https://tr.ee/nLv28DKuXg",
+    handle: "@manaawa.project",
+    url: "https://www.tiktok.com/@manaawa.project",
     icon: FaTiktok,
   },
   {
