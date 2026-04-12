@@ -24,7 +24,7 @@ Single-page website for the Manaawa DJ/producer project.
 - YouTube: https://www.youtube.com/@manaawa.project
 - Instagram: https://www.instagram.com/manaawa.project/
 - Spotify: https://open.spotify.com/intl-de/artist/0DuSv6WDqfozjWVK47Cejj
-- TikTok: https://tr.ee/nLv28DKuXg
+- TikTok: https://www.tiktok.com/@manaawa.project
 
 ## Branch strategy
 - `dev` — active development (you are here)
