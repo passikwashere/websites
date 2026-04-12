@@ -55,7 +55,7 @@ export default function NatureLiveSets() {
   const headingRef = useScrollReveal<HTMLDivElement>();
   const galleryRef = useScrollReveal<HTMLDivElement>(200);
   const scrollRef = useRef<HTMLDivElement>(null);
-  const [playingId, setPlayingId] = useState<string | null>(null);
+  const [playingKey, setPlayingKey] = useState<number | null>(null);
   const [centerIndex, setCenterIndex] = useState(CENTER_START);
   const isJumping = useRef(false);
   const cardWidth = useCardWidth();
@@ -79,7 +79,10 @@ export default function NatureLiveSets() {
 
     const tripledIdx = Math.round(el.scrollLeft / step);
     const realIdx = ((tripledIdx % COUNT) + COUNT) % COUNT;
-    setCenterIndex(realIdx);
+    setCenterIndex((prev) => {
+      if (prev !== realIdx) setPlayingKey(null);
+      return realIdx;
+    });
 
     const realStart = REAL_OFFSET * step;
     const realEnd = (REAL_OFFSET + COUNT - 1) * step;
@@ -188,10 +191,10 @@ export default function NatureLiveSets() {
                   video={video}
                   cardWidth={cardWidth}
                   isCentered={realIdx === centerIndex}
-                  isPlaying={playingId === video.id}
+                  isPlaying={playingKey === i}
                   onClick={() => {
                     if (realIdx === centerIndex) {
-                      setPlayingId(video.id);
+                      setPlayingKey(i);
                     } else {
                       scrollToReal(realIdx);
                     }
