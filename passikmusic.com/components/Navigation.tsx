@@ -6,7 +6,7 @@ import Image from "next/image";
 const links = [
   { href: "#sets", label: "Sets" },
   { href: "#about", label: "About" },
-  { href: "#gallery", label: "Instagram" },
+  { href: "#gallery", label: "Gallery" },
 ];
 
 export default function Navigation() {

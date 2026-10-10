@@ -20,9 +20,6 @@ Everything editable lives in `lib/site.ts`: bio, live sets (YouTube IDs), stats,
 
 Without the key the form shows an error with a mailto fallback.
 
-## Instagram feed (optional)
-- `INSTAGRAM_FEED_URL` — JSON feed URL from behold.so (connect @passikmusic there)
-- Shows the latest 6 posts, refreshed hourly. Without it, the section shows the static photos.
 
 ## Source material
 `_source/` holds the raw press kit (videos, print-res photos, logos, bio PDF) and is gitignored.

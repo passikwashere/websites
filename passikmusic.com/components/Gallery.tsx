@@ -1,4 +1,3 @@
-import { getInstagramPosts } from "@/lib/instagram";
 import { socials } from "@/lib/site";
 import GalleryTile from "./GalleryTile";
 
@@ -13,14 +12,12 @@ const photos = [
 
 const instagram = socials.find((s) => s.name === "Instagram")!;
 
-export default async function Gallery() {
-  const posts = await getInstagramPosts(6);
-
+export default function Gallery() {
   return (
     <section id="gallery" className="relative bg-ink py-24 md:py-32">
       <div className="mx-auto max-w-[1600px] px-6 md:px-10">
         <div className="mb-12 md:mb-16 flex items-end justify-between gap-6 border-b border-bone/10 pb-8">
-          <h2 className="font-display uppercase text-bone text-5xl md:text-8xl leading-[0.85]">Instagram</h2>
+          <h2 className="font-display uppercase text-bone text-5xl md:text-8xl leading-[0.85]">Gallery</h2>
           <a
             href={instagram.url}
             target="_blank"
@@ -31,27 +28,11 @@ export default async function Gallery() {
           </a>
         </div>
 
-        {posts.length > 0 ? (
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-5">
-            {posts.map((p, i) => (
-              <GalleryTile
-                key={p.id}
-                src={p.image}
-                alt={p.alt}
-                href={p.permalink}
-                cls="aspect-[4/5]"
-                remote
-                delay={(i % 3) * 120}
-              />
-            ))}
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-5">
-            {photos.map((p, i) => (
-              <GalleryTile key={p.src} {...p} href={instagram.url} delay={(i % 3) * 120} />
-            ))}
-          </div>
-        )}
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-5">
+          {photos.map((p, i) => (
+            <GalleryTile key={p.src} {...p} href={instagram.url} delay={(i % 3) * 120} />
+          ))}
+        </div>
       </div>
     </section>
   );
