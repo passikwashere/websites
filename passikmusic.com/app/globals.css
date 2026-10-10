@@ -1,0 +1,242 @@
+@import "tailwindcss";
+
+:root {
+  --ink: #0b0a08;
+  --char: #151310;
+  --smoke: #24211c;
+  --bone: #ede6d9;
+  --sand: #d9ccb4;
+  --tan: #b8a584;
+  --clay: #8a7a5f;
+}
+
+@theme inline {
+  --color-ink: var(--ink);
+  --color-char: var(--char);
+  --color-smoke: var(--smoke);
+  --color-bone: var(--bone);
+  --color-sand: var(--sand);
+  --color-tan: var(--tan);
+  --color-clay: var(--clay);
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--ink);
+  color: var(--bone);
+  overflow-x: hidden;
+}
+
+.font-display {
+  font-family: var(--font-display), sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+/* ── Film grain overlay (animated, whole page) ── */
+body::after {
+  content: "";
+  position: fixed;
+  inset: -100%;
+  width: 300%;
+  height: 300%;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.09;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+  animation: grain 0.9s steps(6) infinite;
+}
+
+@keyframes grain {
+  0%   { transform: translate(0, 0); }
+  20%  { transform: translate(-3%, 2%); }
+  40%  { transform: translate(2%, -4%); }
+  60%  { transform: translate(-4%, -1%); }
+  80%  { transform: translate(3%, 3%); }
+  100% { transform: translate(0, 0); }
+}
+
+/* ── Photo toning: warm monochrome so every shot sits in black/beige ── */
+.tone {
+  filter: grayscale(1) sepia(0.28) contrast(1.12) brightness(0.88);
+  transition: filter 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.group:hover .tone-hover {
+  filter: grayscale(0.55) sepia(0.2) contrast(1.08) brightness(0.95);
+}
+
+/* Extra coarse grain + vignette on top of photos */
+.grain-photo {
+  isolation: isolate;
+}
+
+.grain-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.32;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.4' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+  background-size: 140px 140px;
+}
+
+.grain-photo::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background: radial-gradient(ellipse at center, transparent 45%, rgba(11, 10, 8, 0.55) 100%);
+}
+
+/* ── Scroll reveal ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 1.1s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 1.1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Image curtain reveal — clip the children, not the observed element itself
+   (a fully clipped element never reports as intersecting) */
+.reveal-img > * {
+  clip-path: inset(100% 0 0 0);
+  transition: clip-path 1.4s cubic-bezier(0.77, 0, 0.18, 1);
+}
+
+.reveal-img.visible > * {
+  clip-path: inset(0 0 0 0);
+}
+
+/* ── Hero ── */
+@keyframes kenburns {
+  from { transform: scale(1.14); }
+  to   { transform: scale(1); }
+}
+
+.hero-img {
+  animation: kenburns 9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes letterUp {
+  from { transform: translateY(105%); }
+  to   { transform: translateY(0); }
+}
+
+.hero-letter {
+  display: inline-block;
+  transform: translateY(105%);
+  animation: letterUp 1.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+  opacity: 0;
+  animation: fadeIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes scrollLine {
+  0%   { transform: scaleY(0); transform-origin: top; }
+  45%  { transform: scaleY(1); transform-origin: top; }
+  55%  { transform: scaleY(1); transform-origin: bottom; }
+  100% { transform: scaleY(0); transform-origin: bottom; }
+}
+
+.scroll-line {
+  animation: scrollLine 2.4s cubic-bezier(0.77, 0, 0.18, 1) infinite;
+}
+
+/* ── Marquee ── */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+.marquee-track {
+  animation: marquee 40s linear infinite;
+}
+
+/* ── Play button pulse ── */
+@keyframes pulseRing {
+  0%   { transform: scale(1); opacity: 0.5; }
+  100% { transform: scale(1.7); opacity: 0; }
+}
+
+.play-pulse::before {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 1px solid var(--sand);
+  animation: pulseRing 2.2s ease-out infinite;
+}
+
+/* ── Sets carousel ── */
+.gallery-scroll {
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.gallery-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* ── Form fields ── */
+.field {
+  width: 100%;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid rgba(11, 10, 8, 0.22);
+  padding: 0.9rem 0;
+  color: var(--ink);
+  font-size: 1rem;
+  outline: none;
+  border-radius: 0;
+  transition: border-color 0.4s;
+}
+
+.field::placeholder {
+  color: rgba(11, 10, 8, 0.35);
+}
+
+.field:focus {
+  border-bottom-color: var(--ink);
+}
+
+.field[type="date"]::-webkit-calendar-picker-indicator {
+  opacity: 0.4;
+}
+
+/* ── Scrollbar / selection ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--ink); }
+::-webkit-scrollbar-thumb { background: var(--smoke); }
+
+::selection {
+  background: var(--sand);
+  color: var(--ink);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body::after, .hero-img, .marquee-track, .scroll-line { animation: none; }
+  .hero-letter, .fade-in { animation-duration: 0.01s; animation-delay: 0s !important; }
+  .reveal, .reveal-img > * { transition: none; opacity: 1; transform: none; clip-path: none; }
+}
