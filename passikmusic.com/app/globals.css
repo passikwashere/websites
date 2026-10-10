@@ -24,12 +24,13 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: clip;
 }
 
 body {
   background: var(--ink);
   color: var(--bone);
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 .font-display {
