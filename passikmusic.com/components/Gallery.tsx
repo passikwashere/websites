@@ -16,7 +16,7 @@ export default function Gallery() {
   return (
     <section id="gallery" className="relative bg-ink py-24 md:py-32">
       <div className="mx-auto max-w-[1600px] px-6 md:px-10">
-        <div className="mb-12 md:mb-16 flex items-end justify-between gap-6 border-b border-bone/10 pb-8">
+        <div className="mb-12 md:mb-16 flex flex-wrap items-end justify-between gap-x-6 gap-y-4 border-b border-bone/10 pb-8">
           <h2 className="font-display uppercase text-bone text-5xl md:text-8xl leading-[0.85]">Gallery</h2>
           <a
             href={instagram.url}
