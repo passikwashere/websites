@@ -25,10 +25,7 @@ export async function POST(req: Request) {
   const data = {
     name: clip(body.name, 120),
     email: clip(body.email, 200),
-    type: clip(body.type, 40),
-    event: clip(body.event, 200),
-    date: clip(body.date, 40),
-    location: clip(body.location, 200),
+    subject: clip(body.subject, 150),
     message: clip(body.message, 5000),
   };
 
@@ -45,15 +42,12 @@ export async function POST(req: Request) {
   const rows: [string, string][] = [
     ["Name", data.name],
     ["Email", data.email],
-    ["Type", data.type],
-    ["Event / Venue", data.event],
-    ["Date", data.date],
-    ["Location", data.location],
+    ["Subject", data.subject],
   ];
 
   const html = `
     <div style="font-family:Helvetica,Arial,sans-serif;color:#0b0a08;max-width:560px">
-      <h2 style="margin:0 0 16px;font-size:18px;letter-spacing:2px">NEW BOOKING REQUEST</h2>
+      <h2 style="margin:0 0 16px;font-size:18px;letter-spacing:2px">NEW MESSAGE — PASSIKMUSIC.COM</h2>
       <table style="border-collapse:collapse;width:100%;font-size:14px">
         ${rows
           .filter(([, v]) => v)
@@ -74,7 +68,7 @@ export async function POST(req: Request) {
       from: process.env.BOOKING_FROM || "PASSIK Website <website@passikmusic.com>",
       to: [BOOKING_EMAIL],
       replyTo: data.email,
-      subject: `Booking request — ${data.type || "Enquiry"}${data.date ? ` · ${data.date}` : ""} · ${data.name}`,
+      subject: `${data.subject || "Booking / Contact"} — ${data.name}`,
       html,
       text,
     });

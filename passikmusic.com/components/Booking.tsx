@@ -2,21 +2,20 @@
 
 import { useState } from "react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
-import { BOOKING_EMAIL, eventTypes } from "@/lib/site";
+import { BOOKING_EMAIL } from "@/lib/site";
 
 type Status = "idle" | "sending" | "sent" | "error";
 
 export default function Booking() {
   const headingRef = useScrollReveal<HTMLDivElement>();
   const formRef = useScrollReveal<HTMLFormElement>(150);
-  const [type, setType] = useState(eventTypes[0]);
   const [status, setStatus] = useState<Status>("idle");
   const [error, setError] = useState("");
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = e.currentTarget;
-    const payload = { ...Object.fromEntries(new FormData(form)), type };
+    const payload = Object.fromEntries(new FormData(form));
     setStatus("sending");
     setError("");
     try {
@@ -39,7 +38,11 @@ export default function Booking() {
     <section id="booking" className="relative bg-bone text-ink py-28 md:py-40">
       <div className="mx-auto max-w-[1600px] px-6 md:px-10 grid md:grid-cols-12 gap-16 md:gap-10">
         <div ref={headingRef} className="reveal md:col-span-5 flex flex-col">
-          <h2 className="font-display uppercase text-5xl md:text-8xl leading-[0.85] tracking-[-0.04em]">Booking</h2>
+          <h2 className="font-display uppercase text-5xl md:text-8xl leading-[0.85] tracking-[-0.04em]">
+            Booking
+            <br />
+            <span className="text-clay">Contact</span>
+          </h2>
           <a
             href={`mailto:${BOOKING_EMAIL}`}
             className="mt-auto pt-14 font-display text-lg md:text-2xl hover:text-clay transition-colors duration-500"
@@ -49,42 +52,16 @@ export default function Booking() {
         </div>
 
         <form ref={formRef} onSubmit={onSubmit} className="reveal md:col-span-6 md:col-start-7">
-          <fieldset className="mb-10">
-            <legend className="text-[10px] tracking-[0.35em] uppercase text-clay mb-4">Type</legend>
-            <div className="flex flex-wrap gap-2">
-              {eventTypes.map((t) => (
-                <button
-                  type="button"
-                  key={t}
-                  onClick={() => setType(t)}
-                  aria-pressed={type === t}
-                  className={`px-5 py-2.5 text-[11px] tracking-[0.25em] uppercase border transition-colors duration-400 ${
-                    type === t ? "bg-ink text-bone border-ink" : "border-ink/20 text-ink/60 hover:border-ink/60"
-                  }`}
-                >
-                  {t}
-                </button>
-              ))}
-            </div>
-          </fieldset>
-
           <div className="grid sm:grid-cols-2 gap-x-8 gap-y-4">
             <Field label="Name" name="name" required autoComplete="name" />
             <Field label="Email" name="email" type="email" required autoComplete="email" />
-            <Field label="Event / Venue" name="event" />
-            <Field label="Date" name="date" type="date" />
             <div className="sm:col-span-2">
-              <Field label="City / Country" name="location" />
+              <Field label="Subject" name="subject" />
             </div>
             <div className="sm:col-span-2">
               <label className="block">
                 <span className="block text-[10px] tracking-[0.35em] uppercase text-clay mt-4">Message *</span>
-                <textarea
-                  name="message"
-                  required
-                  rows={4}
-                  className="field resize-none"
-                />
+                <textarea name="message" required rows={5} className="field resize-none" />
               </label>
             </div>
           </div>

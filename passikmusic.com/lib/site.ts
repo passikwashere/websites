@@ -48,4 +48,3 @@ export const socials = [
   { name: "Facebook", url: "https://facebook.com/passikdj" },
 ];
 
-export const eventTypes = ["Club", "Festival", "Private", "Press", "Other"];
